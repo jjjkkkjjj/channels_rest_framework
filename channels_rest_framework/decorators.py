@@ -26,26 +26,3 @@ def action(**kwargs):
         return async_function
 
     return action_wrapper
-
-
-def route(cls: type[AsyncAPIConsumerBase], route: str, **initkwargs):
-    def route_wrapper(func):
-        func.consumer_cls = cls
-        func.kwargs = initkwargs
-        func.is_route = True
-        func.route = route
-
-        # @wraps(func)
-        # async def app(scope, recieve, send):
-        #     # TODO: parse route and set args, kwargs!!
-        #     consumer = cls(**initkwargs)
-        #     return await consumer(scope, recieve, send)
-
-        # app.consumer_cls = cls
-        # app.kwargs = initkwargs
-        # app.is_route = True
-        # app.route = route
-
-        return func
-
-    return route_wrapper

@@ -44,18 +44,6 @@ class APIActionHandlerMetaclass(type):
                 name = kwargs.get('name', method_name)
                 cls.available_actions[name] = method_name
 
-            # is_route = getattr(attr, 'is_route', False)
-            # if is_route:
-            #     route = getattr(attr, 'route', None)
-            #     if route is None:
-            #         raise AssertionError('route must be specified')
-            #     consumer_cls = getattr(attr, 'consumer_cls', None)
-            #     if consumer_cls is None:
-            #         raise AssertionError()
-            #     initkwargs = getattr(attr, 'initkwargs', dict())
-
-            #     cls.routing.append(method_name, route, consumer_cls, initkwargs)
-
         for route in getattr(cls, 'routepatterns', []):
 
             pattern = route.pattern
