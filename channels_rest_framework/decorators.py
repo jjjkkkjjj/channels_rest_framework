@@ -1,9 +1,8 @@
+# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/decorators.py
 import asyncio
 from functools import wraps
 
 from channels.db import database_sync_to_async
-
-from .consumers import AsyncAPIConsumerBase
 
 
 def action(**kwargs):

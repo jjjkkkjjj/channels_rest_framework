@@ -1,3 +1,4 @@
+# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/consumers.py
 import json
 import logging
 from functools import partial, update_wrapper
@@ -8,7 +9,6 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Model
 from django.http.response import Http404
 from django.urls.resolvers import RegexPattern, RoutePattern, URLPattern, URLResolver
-from djangochannelsrestframework.permissions import WrappedDRFPermission
 from rest_framework.exceptions import (
     APIException,
     MethodNotAllowed,
@@ -19,6 +19,7 @@ from rest_framework.permissions import AND, NOT, OR
 from rest_framework.permissions import BasePermission as DRFBasePermission
 
 from .exceptions import ActionMissingException
+from .permissions import BasePermission, WrappedDRFPermission
 from .routings import RoutingManager
 from .utils import ensure_async
 
@@ -65,6 +66,13 @@ class APIActionHandlerMetaclass(type):
 
 
 class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
+    """
+    Action Handler class
+
+    Note: This class is "Action Handler" NOT Consumer
+    When you want to use this as consumer, use consumers.AsyncAPIConsumer instead
+    """
+
     # key: action name, value: method name
     available_actions: dict[str, str]
 
@@ -157,7 +165,7 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
 class AsyncAPIActionHandler(AsyncActionHandler):
     permission_classes = ()
 
-    async def get_permissions(self, **kwargs):
+    async def get_permissions(self, **kwargs) -> list[BasePermission]:
         """
         Instantiates and returns the list of permissions that this view requires.
         """
@@ -172,7 +180,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
 
         return permission_instances
 
-    async def check_permissions(self, action: str, **kwargs):
+    async def check_permissions(self, action: str, **kwargs) -> None:
         """
         Check if the action should be permitted.
         Raises an appropriate exception if the request is not permitted.
@@ -184,7 +192,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
             ):
                 raise PermissionDenied()
 
-    async def check_object_permissions(self, action: str, obj: Model, **kwargs):
+    async def check_object_permissions(self, action: str, obj: Model, **kwargs) -> None:
         """
         Check if the action should be permitted.
         Raises an appropriate exception if the request is not permitted.

@@ -1,20 +1,16 @@
-from django.conf import settings
+import pytest
+from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
+from django.contrib.auth import get_user_model
 
 
-# def pytest_configure():
-#     settings.configure(
-#         INSTALLED_APPS=(
-#             'django.contrib.auth',
-#             'django.contrib.contenttypes',
-#             'django.contrib.sessions',
-#             'channels',
-#             'tests',
-#         ),
-#         SECRET_KEY='dog',
-#         DATABASES={
-#             'default': {
-#                 'ENGINE': 'django.db.backends.sqlite3',
-#             }
-#         },
-#         MIDDLEWARE_CLASSES=[],
-#     )
+@database_sync_to_async
+def create_user():
+    return get_user_model().objects.create_user(
+        username='test', password='password'
+    )
+
+
+@pytest.fixture
+def user():
+    return async_to_sync(create_user)()

@@ -1,9 +1,7 @@
-import re
-from typing import Any, Union
+from typing import Any
 
 from django.urls import URLPattern
 from django.urls.exceptions import Resolver404
-from django.urls.resolvers import RegexPattern
 from rest_framework.exceptions import NotFound
 
 

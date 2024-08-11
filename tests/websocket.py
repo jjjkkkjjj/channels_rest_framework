@@ -1,6 +1,8 @@
 from urllib.parse import unquote, urlparse
 
+from channels.db import database_sync_to_async
 from channels.testing.websocket import WebsocketCommunicator
+from django.contrib.auth import get_user_model
 
 
 class ExtendedWebsocketCommunicator(WebsocketCommunicator):
@@ -29,3 +31,16 @@ class ExtendedWebsocketCommunicator(WebsocketCommunicator):
             self.scope['spec_version'] = spec_version
         super(WebsocketCommunicator, self).__init__(application, self.scope)
         self.response_headers = None
+
+
+class AuthCommunicator(ExtendedWebsocketCommunicator):
+    def __init__(
+        self,
+        user,
+        *args,
+        **kwargs,
+    ):
+        super().__init__(*args, **kwargs)
+        # https://github.com/django/channels/issues/903#issuecomment-368412478
+        # Scope should be set already from WebsocketCommunicator or HttpCommunicator
+        self.scope.update({'user': user})
