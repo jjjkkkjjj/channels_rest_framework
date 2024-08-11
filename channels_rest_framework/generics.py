@@ -2,18 +2,13 @@
 from typing import Any
 
 from asgiref.sync import async_to_sync
-from channels.db import database_sync_to_async
 from django.db.models import Model, QuerySet
-from djangochannelsrestframework.consumers import AsyncAPIConsumer
-from djangochannelsrestframework.scope_utils import ensure_async, request_from_scope
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import get_object_or_404
 from rest_framework.serializers import Serializer
 from rest_framework.settings import api_settings
 
 from . import mixins
 from .consumers import AsyncAPIConsumer
-from .decorators import action
 from .handlers import AsyncAPIActionHandler
 
 
@@ -181,13 +176,23 @@ class GenericAsyncAPIActionHandler(AsyncAPIActionHandler):
 class CreateAPIActionHandler(mixins.CreateModelMixin, GenericAsyncAPIActionHandler):
     pass
 
-"""
+
+class ListAPIActionHandler(mixins.ListModelMixin, GenericAsyncAPIActionHandler):
+    pass
+
+
+'''
 ======= Consumer ========
-"""
+'''
+
 
 class GenericAsyncAPIConsumer(AsyncAPIConsumer, GenericAsyncAPIActionHandler):
     pass
 
 
 class CreateAPIConsumer(mixins.CreateModelMixin, GenericAsyncAPIConsumer):
+    pass
+
+
+class ListAPIConsumer(mixins.ListModelMixin, GenericAsyncAPIConsumer):
     pass
