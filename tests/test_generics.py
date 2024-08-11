@@ -366,3 +366,40 @@ async def test_retrieve_api_action_handler():
     }
 
     await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
+async def test_retrieve_api_consumer():
+
+    class ParentConsumer(generics.RetrieveAPIConsumer):
+        serializer_class = TestSerializer
+        queryset = TestModel.objects.all()
+
+    # Test a normal connection
+    # url is mocked by this kwargs
+    communicator = ExtendedWebsocketCommunicator(
+        ParentConsumer(), '/testws/1/', kwargs=dict(pk=1)
+    )
+
+    # Create TestModel
+    data = dict(id=1, title='Title', content='Content')
+    await database_sync_to_async(TestModel.objects.get_or_create)(**data)
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    ### async path
+    await communicator.send_json_to({'action': 'retrieve'})
+
+    response = await communicator.receive_json_from()
+    assert response == {
+        'errors': [],
+        'data': data,
+        'action': 'retrieve',
+        'route': '',
+        'response_status': 200,
+    }
+
+    await communicator.disconnect()
