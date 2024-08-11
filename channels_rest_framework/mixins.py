@@ -35,3 +35,16 @@ class ListModelMixin:
 
         serializer = self.get_serializer(queryset, many=True)
         return serializer.data, status.HTTP_200_OK
+
+
+class RetrieveModelMixin:
+    """
+    Retrieve a model instance.
+    """
+
+    @action()
+    def retrieve(self, *args, **kwargs):
+        action = kwargs.get('action', 'retrieve')
+        instance = self.get_object(action)
+        serializer = self.get_serializer(instance)
+        return serializer.data, status.HTTP_200_OK

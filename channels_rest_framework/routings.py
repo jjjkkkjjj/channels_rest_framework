@@ -1,15 +1,20 @@
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable
 
 from django.urls import URLPattern
 from django.urls.exceptions import Resolver404
 from rest_framework.exceptions import NotFound
+
+if TYPE_CHECKING:
+    from .handlers import AsyncActionHandler
 
 
 class RoutingManager:
     def __init__(self):
         self.routes: list[URLPattern] = []
 
-    def append(self, pattern) -> None:
+    def append(self, pattern: URLPattern) -> None:
         """Add new route to be managed
 
         Parameters
@@ -20,7 +25,27 @@ class RoutingManager:
         self.routes.append(pattern)
 
     # Any is intended for avoiding vscode's testing error due to circular import
-    async def resolve(self, route: str, scope: dict, receive, send, **kwargs) -> Any:
+    async def resolve(
+        self, route: str, scope: dict, receive: Callable, send: Callable, **kwargs
+    ) -> AsyncActionHandler:
+        """Resolve a given route
+
+        Parameters
+        ----------
+        route : str
+            The route path to be resolved
+        scope : dict
+            The scope dict
+        receive : Callable
+            The recieve function to be passed into a matched action handler
+        send : Callable
+            The send function to be passed into a matched action handler
+
+        Returns
+        -------
+        AsyncActionHandler
+            The matched action handler
+        """
 
         for routing in self.routes:
             try:

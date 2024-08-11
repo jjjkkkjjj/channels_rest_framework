@@ -37,46 +37,54 @@ async def test_create_api_action_handler():
     assert connected
 
     ### async path
-    data = dict(id=1, title='Title', content='Content')
+    data = dict(title='Title', content='Content')
     await communicator.send_json_to(
         {
             'action': 'create',
             'data': data,
-            'route': 'test_async_child_route/create/',
+            'route': 'test_async_child_route/',
         }
     )
 
     response = await communicator.receive_json_from()
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
-        'data': data,
         'action': 'create',
-        'route': 'test_async_child_route/create/',
+        'route': 'test_async_child_route/',
         'response_status': 201,
     }
-    instance = await database_sync_to_async(TestModel.objects.get)(pk=data['id'])
-    assert data == model_to_dict(instance)
+    instance = await database_sync_to_async(TestModel.objects.get)(
+        pk=response_data['id']
+    )
+    assert response_data == model_to_dict(instance)
+    response_data.pop('id')
+    assert response_data == data
 
     ### sync path
-    data = dict(id=2, title='Title', content='Content')
+    data = dict(title='Title', content='Content')
     await communicator.send_json_to(
         {
             'action': 'create',
             'data': data,
-            'route': 'test_sync_child_route/create/',
+            'route': 'test_sync_child_route/',
         }
     )
 
     response = await communicator.receive_json_from()
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
-        'data': data,
         'action': 'create',
-        'route': 'test_sync_child_route/create/',
+        'route': 'test_sync_child_route/',
         'response_status': 201,
     }
-    instance = await database_sync_to_async(TestModel.objects.get)(pk=data['id'])
-    assert data == model_to_dict(instance)
+    instance = await database_sync_to_async(TestModel.objects.get)(
+        pk=response_data['id']
+    )
+    assert response_data == model_to_dict(instance)
+    response_data.pop('id')
+    assert response_data == data
 
     await communicator.disconnect()
 
@@ -97,7 +105,7 @@ async def test_create_api_consumer():
     assert connected
 
     ### async path
-    data = dict(id=3, title='Title', content='Content')
+    data = dict(title='Title', content='Content')
     await communicator.send_json_to(
         {
             'action': 'create',
@@ -106,18 +114,23 @@ async def test_create_api_consumer():
     )
 
     response = await communicator.receive_json_from()
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
-        'data': data,
         'action': 'create',
         'route': '',
         'response_status': 201,
     }
-    instance = await database_sync_to_async(TestModel.objects.get)(pk=data['id'])
-    assert data == model_to_dict(instance)
+    instance = await database_sync_to_async(TestModel.objects.get)(
+        pk=response_data['id']
+    )
+
+    assert response_data == model_to_dict(instance)
+    response_data.pop('id')
+    assert response_data == data
 
     ### sync path
-    data = dict(id=4, title='Title', content='Content')
+    data = dict(title='Title', content='Content')
     await communicator.send_json_to(
         {
             'action': 'create',
@@ -126,15 +139,20 @@ async def test_create_api_consumer():
     )
 
     response = await communicator.receive_json_from()
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
-        'data': data,
         'action': 'create',
         'route': '',
         'response_status': 201,
     }
-    instance = await database_sync_to_async(TestModel.objects.get)(pk=data['id'])
-    assert data == model_to_dict(instance)
+    instance = await database_sync_to_async(TestModel.objects.get)(
+        pk=response_data['id']
+    )
+
+    assert response_data == model_to_dict(instance)
+    response_data.pop('id')
+    assert response_data == data
 
     await communicator.disconnect()
 
@@ -159,8 +177,8 @@ async def test_list_api_action_handler():
 
     # Create 2 TestModel
     answers = [
-        dict(id=1, title='Title', content='Content'),
-        dict(id=2, title='Title2', content='Content2'),
+        dict(title='Title', content='Content'),
+        dict(title='Title2', content='Content2'),
     ]
     for ans in answers:
         await database_sync_to_async(TestModel.objects.get_or_create)(**ans)
@@ -173,41 +191,43 @@ async def test_list_api_action_handler():
     await communicator.send_json_to(
         {
             'action': 'list',
-            'route': 'test_async_child_route/list/',
+            'route': 'test_async_child_route/',
         }
     )
 
     response = await communicator.receive_json_from()
-    data = response.pop('data')
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
         'action': 'list',
-        'route': 'test_async_child_route/list/',
+        'route': 'test_async_child_route/',
         'response_status': 200,
     }
-    assert len(data) == 2
-    for response_data, ans in zip(data, answers):
-        assert response_data == ans
+    assert len(response_data) == 2
+    for data, ans in zip(response_data, answers):
+        data.pop('id')
+        assert data == ans
 
     ### sync path
     await communicator.send_json_to(
         {
             'action': 'list',
-            'route': 'test_sync_child_route/list/',
+            'route': 'test_sync_child_route/',
         }
     )
 
     response = await communicator.receive_json_from()
-    data = response.pop('data')
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
         'action': 'list',
-        'route': 'test_sync_child_route/list/',
+        'route': 'test_sync_child_route/',
         'response_status': 200,
     }
-    assert len(data) == 2
-    for response_data, ans in zip(data, answers):
-        assert response_data == ans
+    assert len(response_data) == 2
+    for data, ans in zip(response_data, answers):
+        data.pop('id')
+        assert data == ans
 
     await communicator.disconnect()
 
@@ -243,16 +263,16 @@ async def test_list_api_consumer():
     )
 
     response = await communicator.receive_json_from()
-    data = response.pop('data')
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
         'action': 'list',
         'route': '',
         'response_status': 200,
     }
-    assert len(data) == 2
-    for response_data, ans in zip(data, answers):
-        assert response_data == ans
+    assert len(response_data) == 2
+    for data, ans in zip(response_data, answers):
+        assert data == ans
 
     ### sync path
     await communicator.send_json_to(
@@ -262,15 +282,87 @@ async def test_list_api_consumer():
     )
 
     response = await communicator.receive_json_from()
-    data = response.pop('data')
+    response_data = response.pop('data')
     assert response == {
         'errors': [],
         'action': 'list',
         'route': '',
         'response_status': 200,
     }
-    assert len(data) == 2
-    for response_data, ans in zip(data, answers):
-        assert response_data == ans
+    assert len(response_data) == 2
+    for data, ans in zip(response_data, answers):
+        assert data == ans
+
+    await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
+async def test_retrieve_api_action_handler():
+
+    class ChildActionHandler(generics.RetrieveAPIActionHandler):
+        serializer_class = TestSerializer
+        queryset = TestModel.objects.all()
+
+    class ParentConsumer(AsyncAPIConsumer):
+
+        routepatterns = [
+            re_path(
+                r'test_async_child_route/(?P<pk>[-\w]+)/$',
+                ChildActionHandler.as_aaah(),
+            ),
+            re_path(
+                r'test_sync_child_route/(?P<pk>[-\w]+)/$', ChildActionHandler.as_aaah()
+            ),
+        ]
+
+    # Test a normal connection
+    communicator = ExtendedWebsocketCommunicator(ParentConsumer(), '/testws/')
+
+    # Create 2 TestModel
+    answers = [
+        dict(id=1, title='Title', content='Content'),
+        dict(id=2, title='Title2', content='Content2'),
+    ]
+    for ans in answers:
+        await database_sync_to_async(TestModel.objects.get_or_create)(**ans)
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    ### async path
+    await communicator.send_json_to(
+        {
+            'action': 'retrieve',
+            'route': f'test_async_child_route/{answers[0]["id"]}/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    assert response == {
+        'errors': [],
+        'data': answers[0],
+        'action': 'retrieve',
+        'route': f'test_async_child_route/{answers[0]["id"]}/',
+        'response_status': 200,
+    }
+
+    ### sync path
+    await communicator.send_json_to(
+        {
+            'action': 'retrieve',
+            'route': f'test_sync_child_route/{answers[1]["id"]}/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    assert response == {
+        'errors': [],
+        'data': answers[1],
+        'action': 'retrieve',
+        'route': f'test_sync_child_route/{answers[1]["id"]}/',
+        'response_status': 200,
+    }
 
     await communicator.disconnect()

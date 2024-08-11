@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/consumers.py
 import json
 import logging
@@ -17,6 +19,7 @@ from rest_framework.exceptions import (
 )
 from rest_framework.permissions import AND, NOT, OR
 from rest_framework.permissions import BasePermission as DRFBasePermission
+from typing_extensions import Self
 
 from .exceptions import ActionMissingException
 from .permissions import BasePermission, WrappedDRFPermission
@@ -142,7 +145,7 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
         return json.dumps(content)
 
     @classmethod
-    def as_aaah(cls, **initkwargs):
+    def as_aaah(cls, **initkwargs) -> Self:
         """
         Return an ASGI v3 single callable that instantiates a consumer instance
         per scope. Similar in purpose to Django's as_view().
