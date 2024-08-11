@@ -13,7 +13,7 @@ from .websocket import AuthCommunicator, ExtendedWebsocketCommunicator
 @pytest.mark.asyncio
 async def test_parent_is_authenticated(user):
 
-    class ChildConsumer(AsyncAPIActionHandler):
+    class ChildActionHandler(AsyncAPIActionHandler):
         @action()
         async def test_async_action(self, pk=None, **kwargs):
             return {'pk': pk}, 200
@@ -25,8 +25,8 @@ async def test_parent_is_authenticated(user):
     class ParentConsumer(AsyncAPIConsumer):
         permission_classes = (IsAuthenticated,)
         routepatterns = [
-            path('test_async_child_route/', ChildConsumer.as_aaah()),
-            path('test_sync_child_route/', ChildConsumer.as_aaah()),
+            path('test_async_child_route/', ChildActionHandler.as_aaah()),
+            path('test_sync_child_route/', ChildActionHandler.as_aaah()),
         ]
 
     # Test a normal connection
@@ -85,7 +85,7 @@ async def test_parent_is_authenticated(user):
 @pytest.mark.asyncio
 async def test_child_is_authenticated(user):
 
-    class ChildConsumer(AsyncAPIActionHandler):
+    class ChildActionHandler(AsyncAPIActionHandler):
         permission_classes = (IsAuthenticated,)
 
         @action()
@@ -99,8 +99,8 @@ async def test_child_is_authenticated(user):
     class ParentConsumer(AsyncAPIConsumer):
 
         routepatterns = [
-            path('test_async_child_route/', ChildConsumer.as_aaah()),
-            path('test_sync_child_route/', ChildConsumer.as_aaah()),
+            path('test_async_child_route/', ChildActionHandler.as_aaah()),
+            path('test_sync_child_route/', ChildActionHandler.as_aaah()),
         ]
 
         @action()
