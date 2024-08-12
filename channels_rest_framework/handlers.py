@@ -147,10 +147,11 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
     @classmethod
     def as_aaah(cls, **initkwargs) -> Self:
         """
-        Return an ASGI v3 single callable that instantiates a consumer instance
-        per scope. Similar in purpose to Django's as_view().
+        Return an Async API Action Handler (not scream) single callable that
+        instantiates a action handler instance per scope.
+        Similar in purpose to Django's as_view().
 
-        initkwargs will be used to instantiate the consumer instance.
+        initkwargs will be used to instantiate the action handler instance.
         """
 
         async def app(scope, receive, send):

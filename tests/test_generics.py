@@ -5,13 +5,10 @@ from django.urls import path, re_path
 
 from channels_rest_framework import generics
 from channels_rest_framework.consumers import AsyncAPIConsumer
-from channels_rest_framework.decorators import async_action
-from channels_rest_framework.handlers import AsyncAPIActionHandler
-from channels_rest_framework.permissions import IsAuthenticated
 
 from .models import TestModel
 from .serializers import TestSerializer
-from .websocket import AuthCommunicator, ExtendedWebsocketCommunicator
+from .websocket import ExtendedWebsocketCommunicator
 
 
 @pytest.mark.django_db(transaction=True)

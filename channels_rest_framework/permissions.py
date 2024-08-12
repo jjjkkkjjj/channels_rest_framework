@@ -1,7 +1,8 @@
 # reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/permissions.py
-from typing import Any, Dict
+from typing import Any, Union
 
 from channels.consumer import AsyncConsumer
+from channels.db import database_sync_to_async
 from django.db.models import Model
 from rest_framework.permissions import BasePermission as DRFBasePermission
 
@@ -53,7 +54,7 @@ class AND:
         self.op2 = op2
 
     def has_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
     ):
         return self.op1.has_permission(
             scope, consumer, action, **kwargs
@@ -66,7 +67,7 @@ class OR:
         self.op2 = op2
 
     def has_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
     ):
         return self.op1.has_permission(
             scope, consumer, action, **kwargs
@@ -78,7 +79,7 @@ class NOT:
         self.op1 = op1
 
     def has_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
     ):
         return not self.op1.has_permission(scope, consumer, action, **kwargs)
 
@@ -99,30 +100,30 @@ class BasePermission(metaclass=BasePermissionMetaclass):
     """
 
     async def has_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
-    ):
+        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+    ) -> bool:
         """
         Called on every websocket message sent
         before the corresponding action handler is called.
         """
-        pass
+        return True
 
     async def has_object_permission(
         self,
-        scope: Dict[str, Any],
+        scope: dict[str, Any],
         consumer: AsyncConsumer,
         action: str,
         obj: Model,
-        **kwargs
-    ):
+        **kwargs,
+    ) -> bool:
         """
         Called on every websocket message sent
         before the corresponding action handler is called.
         """
-        pass
+        return True
 
     async def can_connect(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, message=None
+        self, scope: dict[str, Any], consumer: AsyncConsumer, message=None
     ) -> bool:
         """
         Called during connection to validate
@@ -133,7 +134,7 @@ class BasePermission(metaclass=BasePermissionMetaclass):
         return True
 
     async def can_connect_by_object_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, obj: Model, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, obj: Model, **kwargs
     ) -> bool:
         """
         Called during connection to validate
@@ -148,17 +149,17 @@ class AllowAny(BasePermission):
     """Allow any permission class"""
 
     async def has_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
     ) -> bool:
         return True
 
     async def has_object_permission(
         self,
-        scope: Dict[str, Any],
+        scope: dict[str, Any],
         consumer: AsyncConsumer,
         action: str,
         obj: Model,
-        **kwargs
+        **kwargs,
     ):
         return True
 
@@ -167,12 +168,48 @@ class IsAuthenticated(BasePermission):
     """Allow authenticated users"""
 
     async def has_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
     ) -> bool:
         user = scope.get('user')
         if not user:
             return False
         return user.pk and user.is_authenticated
+
+
+class IsOwner(BasePermission):
+    """Allow object owner"""
+
+    lookup_field = 'user'
+    # actions list or '__all__'
+    check_actions: Union[list[str], str] = '__all__'
+
+    async def has_object_permission(
+        self,
+        scope: dict[str, Any],
+        consumer: AsyncConsumer,
+        action: str,
+        obj: Model,
+        **kwargs,
+    ):
+        if isinstance(self.check_actions, str):
+            if self.check_actions == '__all__':
+                pass
+            else:
+                raise ValueError("check_actions accepts '__all__' only in case of str")
+        elif (
+            isinstance(self.check_actions, (list, tuple))
+            and action not in self.check_actions
+        ):
+            return True
+
+        assert await database_sync_to_async(hasattr)(
+            obj, self.lookup_field
+        ), f'The object must have "{self.lookup_field}" attribute'
+        user = scope.get('user')
+        if not user:
+            return False
+
+        return user == await database_sync_to_async(getattr)(obj, self.lookup_field)
 
 
 class WrappedDRFPermission(BasePermission):
@@ -194,14 +231,14 @@ class WrappedDRFPermission(BasePermission):
         self.permission = permission
 
     async def has_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
     ) -> bool:
         request = request_from_scope(scope)
         request.method = self.mapped_actions.get(action, action.upper())
         return await ensure_async(self.permission.has_permission)(request, consumer)
 
     async def can_connect_by_object_permission(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, obj: Model, **kwargs
+        self, scope: dict[str, Any], consumer: AsyncConsumer, obj: Model, **kwargs
     ) -> bool:
         request = request_from_scope(scope)
         request.method = self.mapped_actions.get('connect', 'CONNECT')
@@ -210,7 +247,7 @@ class WrappedDRFPermission(BasePermission):
         )
 
     async def can_connect(
-        self, scope: Dict[str, Any], consumer: AsyncConsumer, message=None
+        self, scope: dict[str, Any], consumer: AsyncConsumer, message=None
     ) -> bool:
         request = request_from_scope(scope)
         request.method = self.mapped_actions.get('connect', 'CONNECT')
