@@ -5,7 +5,12 @@ from functools import wraps
 from channels.db import database_sync_to_async
 
 
-def action(**kwargs):
+def async_action(**kwargs):
+    """Set the method as async action.
+    Note that use `async_to_sync`
+    if you call the method decorated by this decorator in sync method
+    """
+
     def action_wrapper(func):
         func.is_action = True
         func.kwargs = kwargs

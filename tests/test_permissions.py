@@ -2,7 +2,7 @@ import pytest
 from django.urls import path, re_path
 
 from channels_rest_framework.consumers import AsyncAPIConsumer
-from channels_rest_framework.decorators import action
+from channels_rest_framework.decorators import async_action
 from channels_rest_framework.handlers import AsyncAPIActionHandler
 from channels_rest_framework.permissions import IsAuthenticated
 
@@ -14,19 +14,14 @@ from .websocket import AuthCommunicator, ExtendedWebsocketCommunicator
 async def test_parent_is_authenticated(user):
 
     class ChildActionHandler(AsyncAPIActionHandler):
-        @action()
-        async def test_async_action(self, pk=None, **kwargs):
+        @async_action()
+        async def test_action(self, pk=None, **kwargs):
             return {'pk': pk}, 200
-
-        @action()
-        def test_sync_action(self, pk=None, **kwargs):
-            return {'pk': pk, 'sync': True}, 200
 
     class ParentConsumer(AsyncAPIConsumer):
         permission_classes = (IsAuthenticated,)
         routepatterns = [
-            path('test_async_child_route/', ChildActionHandler.as_aaah()),
-            path('test_sync_child_route/', ChildActionHandler.as_aaah()),
+            path('test_child_route/', ChildActionHandler.as_aaah()),
         ]
 
     # Test a normal connection
@@ -38,9 +33,9 @@ async def test_parent_is_authenticated(user):
 
     await communicator.send_json_to(
         {
-            'action': 'test_async_action',
+            'action': 'test_action',
             'pk': 2,
-            'route': 'test_async_child_route/test_async_action/',
+            'route': 'test_child_route/',
         }
     )
 
@@ -48,8 +43,8 @@ async def test_parent_is_authenticated(user):
     errors = response.pop('errors')
     assert response == {
         'data': None,
-        'action': 'test_async_action',
-        'route': 'test_async_child_route/test_async_action/',
+        'action': 'test_action',
+        'route': 'test_child_route/',
         'status': 403,
     }
     assert len(errors) > 0
@@ -62,9 +57,9 @@ async def test_parent_is_authenticated(user):
 
     await communicator.send_json_to(
         {
-            'action': 'test_sync_action',
+            'action': 'test_action',
             'pk': 3,
-            'route': 'test_sync_child_route/test_sync_action/',
+            'route': 'test_child_route/',
         }
     )
 
@@ -72,9 +67,9 @@ async def test_parent_is_authenticated(user):
 
     assert response == {
         'errors': [],
-        'data': {'pk': 3, 'sync': True},
-        'action': 'test_sync_action',
-        'route': 'test_sync_child_route/test_sync_action/',
+        'data': {'pk': 3},
+        'action': 'test_action',
+        'route': 'test_child_route/',
         'status': 200,
     }
 
@@ -88,28 +83,19 @@ async def test_child_is_authenticated(user):
     class ChildActionHandler(AsyncAPIActionHandler):
         permission_classes = (IsAuthenticated,)
 
-        @action()
-        async def test_async_action(self, pk=None, **kwargs):
+        @async_action()
+        async def test_action(self, pk=None, **kwargs):
             return {'pk': pk}, 200
-
-        @action()
-        def test_sync_action(self, pk=None, **kwargs):
-            return {'pk': pk, 'sync': True}, 200
 
     class ParentConsumer(AsyncAPIConsumer):
 
         routepatterns = [
-            path('test_async_child_route/', ChildActionHandler.as_aaah()),
-            path('test_sync_child_route/', ChildActionHandler.as_aaah()),
+            path('test_child_route/', ChildActionHandler.as_aaah()),
         ]
 
-        @action()
-        async def test_parent_async_action(self, pk=None, **kwargs):
+        @async_action()
+        async def test_parent_action(self, pk=None, **kwargs):
             return {'pk': pk}, 200
-
-        @action()
-        def test_parent_sync_action(self, pk=None, **kwargs):
-            return {'pk': pk, 'sync': True}, 200
 
     # Test a normal connection
     communicator = ExtendedWebsocketCommunicator(ParentConsumer(), '/testws/')
@@ -119,27 +105,9 @@ async def test_child_is_authenticated(user):
     assert connected
 
     ### Parent Action ###
-    # Permission Denied
     await communicator.send_json_to(
         {
-            'action': 'test_parent_sync_action',
-            'pk': 3,
-        }
-    )
-
-    response = await communicator.receive_json_from()
-
-    assert response == {
-        'errors': [],
-        'data': {'pk': 3, 'sync': True},
-        'action': 'test_parent_sync_action',
-        'route': '',
-        'status': 200,
-    }
-
-    await communicator.send_json_to(
-        {
-            'action': 'test_parent_async_action',
+            'action': 'test_parent_action',
             'pk': 2,
         }
     )
@@ -149,7 +117,7 @@ async def test_child_is_authenticated(user):
     assert response == {
         'errors': [],
         'data': {'pk': 2},
-        'action': 'test_parent_async_action',
+        'action': 'test_parent_action',
         'route': '',
         'status': 200,
     }
@@ -158,9 +126,9 @@ async def test_child_is_authenticated(user):
     # Permission Denied
     await communicator.send_json_to(
         {
-            'action': 'test_sync_action',
+            'action': 'test_action',
             'pk': 3,
-            'route': 'test_sync_child_route/test_sync_action/',
+            'route': 'test_child_route/',
         }
     )
 
@@ -169,8 +137,8 @@ async def test_child_is_authenticated(user):
     errors = response.pop('errors')
     assert response == {
         'data': None,
-        'action': 'test_sync_action',
-        'route': 'test_sync_child_route/test_sync_action/',
+        'action': 'test_action',
+        'route': 'test_child_route/',
         'status': 403,
     }
     assert len(errors) > 0
@@ -183,9 +151,9 @@ async def test_child_is_authenticated(user):
 
     await communicator.send_json_to(
         {
-            'action': 'test_sync_action',
+            'action': 'test_action',
             'pk': 3,
-            'route': 'test_sync_child_route/test_sync_action/',
+            'route': 'test_child_route/',
         }
     )
 
@@ -193,9 +161,9 @@ async def test_child_is_authenticated(user):
 
     assert response == {
         'errors': [],
-        'data': {'pk': 3, 'sync': True},
-        'action': 'test_sync_action',
-        'route': 'test_sync_child_route/test_sync_action/',
+        'data': {'pk': 3},
+        'action': 'test_action',
+        'route': 'test_child_route/',
         'status': 200,
     }
 

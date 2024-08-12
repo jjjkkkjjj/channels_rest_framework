@@ -1,7 +1,7 @@
 from asgiref.sync import async_to_sync
 from rest_framework import status
 
-from .decorators import action
+from .decorators import async_action
 
 
 class CreateModelMixin:
@@ -9,7 +9,7 @@ class CreateModelMixin:
     Create a model instance.
     """
 
-    @action()
+    @async_action()
     def create(self, data, *args, **kwargs):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -25,7 +25,7 @@ class ListModelMixin:
     List a queryset.
     """
 
-    @action()
+    @async_action()
     def list(self, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -43,7 +43,7 @@ class RetrieveModelMixin:
     Retrieve a model instance.
     """
 
-    @action()
+    @async_action()
     def retrieve(self, *args, **kwargs):
         action = kwargs.get('action', 'retrieve')
         instance = self.get_object(action)
@@ -56,7 +56,7 @@ class UpdateModelMixin:
     Update a model instance.
     """
 
-    @action()
+    @async_action()
     def update(self, data, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         action = kwargs.get('action', 'update')
@@ -75,7 +75,7 @@ class UpdateModelMixin:
     def perform_update(self, serializer):
         serializer.save()
 
-    @action()
+    @async_action()
     def partial_update(self, data, *args, **kwargs):
         kwargs['partial'] = True
         return async_to_sync(self.update)(data, *args, **kwargs)

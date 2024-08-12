@@ -2,7 +2,7 @@ import pytest
 from django.urls import path, re_path
 
 from channels_rest_framework.consumers import AsyncAPIConsumer
-from channels_rest_framework.decorators import action
+from channels_rest_framework.decorators import async_action
 from channels_rest_framework.handlers import AsyncAPIActionHandler
 
 from .websocket import ExtendedWebsocketCommunicator
@@ -13,11 +13,11 @@ from .websocket import ExtendedWebsocketCommunicator
 async def test_decorator_sync_route():
 
     class ChildConsumer(AsyncAPIActionHandler):
-        @action()
+        @async_action()
         async def test_async_action(self, pk=None, **kwargs):
             return {'pk': pk}, 200
 
-        @action()
+        @async_action()
         def test_sync_action(self, pk=None, **kwargs):
             return {'pk': pk, 'sync': True}, 200
 
@@ -80,12 +80,12 @@ async def test_decorator_async_route():
     kwargs_results = {}
 
     class ChildConsumer(AsyncAPIActionHandler):
-        @action()
+        @async_action()
         async def test_async_action(self, pk=None, **kwargs):
             kwargs_results['test_async_action'] = self.kwargs
             return {'pk': pk}, 200
 
-        @action()
+        @async_action()
         def test_sync_action(self, pk=None, **kwargs):
             kwargs_results['test_sync_action'] = self.kwargs
             return {'pk': pk, 'sync': True}, 200
