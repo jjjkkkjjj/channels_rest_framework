@@ -20,7 +20,8 @@
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="docs/introduction/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,11 +43,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">channels_rest_framework documentation</a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/introduction/index.html">Introduction</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -63,7 +64,7 @@
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">channels_rest_framework documentation</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -73,17 +74,124 @@
              
   <section id="channels-rest-framework-documentation">
 <h1>channels_rest_framework documentation<a class="headerlink" href="#channels-rest-framework-documentation" title="Link to this heading"></a></h1>
-<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
-<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
-documentation for details.</p>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/introduction/index.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/introduction/action.html">Action</a></li>
+</ul>
+</li>
+</ul>
 </div>
+</section>
+<section id="channels-rest-framework">
+<h1>channels_rest_framework<a class="headerlink" href="#channels-rest-framework" title="Link to this heading"></a></h1>
+<p>The enhanced modules for REST WebSockets using django channels.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>channels_rest_framework
+</pre></div>
+</div>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>channels_rest_framework is the enhanced modules for REST WebSockets using django <a class="reference external" href="https://channels.readthedocs.io/en/latest/">channels</a>.</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">serializers</span></code> and <code class="docutils literal notranslate"><span class="pre">queryset</span></code> in <a class="reference external" href="https://www.django-rest-framework.org/">rest_framework</a> in channels_rest_framework. Also, we are ready for similar <code class="docutils literal notranslate"><span class="pre">permissions</span></code> and <code class="docutils literal notranslate"><span class="pre">generics</span></code> too.</p>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<p>We use the below model and serializer as example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple model to test with.&quot;&quot;&quot;</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TestSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">TestModel</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">RetrieveAPIActionHandler</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">AsyncAPIConsumer</span><span class="p">):</span>
+
+    <span class="n">routepatterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">re_path</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s1">&#39;test_child_route/(?P&lt;pk&gt;[-\w]+)/$&#39;</span><span class="p">,</span>
+            <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">(),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>When you send the below json after establishing the connection,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span> <span class="c1"># Similar with GET method of HTTP request</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>you will get the below response. This mechanism is very similar with original rest_framework!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;content&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="details">
+<h2>Details<a class="headerlink" href="#details" title="Link to this heading"></a></h2>
+<p>For more details, see <a class="reference external" href="https://jjjkkkjjj.github.io/channels_rest_framework/">docs</a>.</p>
+</section>
+<section id="development">
+<h2>Development<a class="headerlink" href="#development" title="Link to this heading"></a></h2>
+<section id="code">
+<h3>code<a class="headerlink" href="#code" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="documentation">
+<h3>documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>sphinx
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>generate rst files and html files</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>sphinx
+bash<span class="w"> </span>build.sh
+</pre></div>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="docs/introduction/index.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
