@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>channels_rest_framework package &mdash; channels_rest_framework 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            channels_rest_framework
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">channels_rest_framework package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-channels_rest_framework.consumers">channels_rest_framework.consumers module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumer"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumer</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumer.available_actions"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumer.available_actions</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumer.routing"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumer.routing</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumer.websocket_connect"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumer.websocket_connect()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumer.websocket_disconnect"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumer.websocket_disconnect()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumerBase</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase.available_actions"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumerBase.available_actions</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase.receive_json"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumerBase.receive_json()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase.routing"><code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumerBase.routing</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-channels_rest_framework.decorators">channels_rest_framework.decorators module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.decorators.async_action"><code class="docutils literal notranslate"><span class="pre">async_action()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-channels_rest_framework.exceptions">channels_rest_framework.exceptions module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.ActionMissingException"><code class="docutils literal notranslate"><span class="pre">ActionMissingException</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.ActionMissingException.default_code"><code class="docutils literal notranslate"><span class="pre">ActionMissingException.default_code</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.ActionMissingException.default_detail"><code class="docutils literal notranslate"><span class="pre">ActionMissingException.default_detail</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.ActionMissingException.status_code"><code class="docutils literal notranslate"><span class="pre">ActionMissingException.status_code</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.RouteMissingException"><code class="docutils literal notranslate"><span class="pre">RouteMissingException</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.RouteMissingException.default_code"><code class="docutils literal notranslate"><span class="pre">RouteMissingException.default_code</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.RouteMissingException.default_detail"><code class="docutils literal notranslate"><span class="pre">RouteMissingException.default_detail</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.exceptions.RouteMissingException.status_code"><code class="docutils literal notranslate"><span class="pre">RouteMissingException.status_code</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels-rest-framework-generics-module">channels_rest_framework.generics module</a></li>
+<li><a class="reference internal" href="#module-channels_rest_framework.handlers">channels_rest_framework.handlers module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.APIActionHandlerMetaclass"><code class="docutils literal notranslate"><span class="pre">APIActionHandlerMetaclass</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.available_actions"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.available_actions</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.check_object_permissions"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.check_object_permissions()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.check_permissions"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.check_permissions()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.get_permissions"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.get_permissions()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.handle_action"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.handle_action()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.handle_exception"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.handle_exception()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.permission_classes"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.permission_classes</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.receive_json"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.receive_json()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.reply"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.reply()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.routing"><code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler.routing</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.as_aaah"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.as_aaah()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.available_actions"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.available_actions</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.close"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.close()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.decode_json"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.decode_json()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.encode_json"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.encode_json()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.routepatterns"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.routepatterns</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.routing"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.routing</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.send"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.send()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler.send_json"><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler.send_json()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-channels_rest_framework.mixins">channels_rest_framework.mixins module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.CreateModelMixin"><code class="docutils literal notranslate"><span class="pre">CreateModelMixin</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.CreateModelMixin.create"><code class="docutils literal notranslate"><span class="pre">CreateModelMixin.create()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.CreateModelMixin.perform_create"><code class="docutils literal notranslate"><span class="pre">CreateModelMixin.perform_create()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.DestroyModelMixin"><code class="docutils literal notranslate"><span class="pre">DestroyModelMixin</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.DestroyModelMixin.destroy"><code class="docutils literal notranslate"><span class="pre">DestroyModelMixin.destroy()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.DestroyModelMixin.perform_destroy"><code class="docutils literal notranslate"><span class="pre">DestroyModelMixin.perform_destroy()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.ListModelMixin"><code class="docutils literal notranslate"><span class="pre">ListModelMixin</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.ListModelMixin.list"><code class="docutils literal notranslate"><span class="pre">ListModelMixin.list()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.RetrieveModelMixin"><code class="docutils literal notranslate"><span class="pre">RetrieveModelMixin</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.RetrieveModelMixin.retrieve"><code class="docutils literal notranslate"><span class="pre">RetrieveModelMixin.retrieve()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.UpdateModelMixin"><code class="docutils literal notranslate"><span class="pre">UpdateModelMixin</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.UpdateModelMixin.partial_update"><code class="docutils literal notranslate"><span class="pre">UpdateModelMixin.partial_update()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.UpdateModelMixin.perform_update"><code class="docutils literal notranslate"><span class="pre">UpdateModelMixin.perform_update()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.mixins.UpdateModelMixin.update"><code class="docutils literal notranslate"><span class="pre">UpdateModelMixin.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-channels_rest_framework.permissions">channels_rest_framework.permissions module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.AND"><code class="docutils literal notranslate"><span class="pre">AND</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.AND.has_permission"><code class="docutils literal notranslate"><span class="pre">AND.has_permission()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.AllowAny"><code class="docutils literal notranslate"><span class="pre">AllowAny</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.AllowAny.has_object_permission"><code class="docutils literal notranslate"><span class="pre">AllowAny.has_object_permission()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.AllowAny.has_permission"><code class="docutils literal notranslate"><span class="pre">AllowAny.has_permission()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission"><code class="docutils literal notranslate"><span class="pre">BasePermission</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission.can_connect"><code class="docutils literal notranslate"><span class="pre">BasePermission.can_connect()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission.can_connect_by_object_permission"><code class="docutils literal notranslate"><span class="pre">BasePermission.can_connect_by_object_permission()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission.has_object_permission"><code class="docutils literal notranslate"><span class="pre">BasePermission.has_object_permission()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission.has_permission"><code class="docutils literal notranslate"><span class="pre">BasePermission.has_permission()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.BasePermissionMetaclass"><code class="docutils literal notranslate"><span class="pre">BasePermissionMetaclass</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.IsAuthenticated"><code class="docutils literal notranslate"><span class="pre">IsAuthenticated</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.IsAuthenticated.has_permission"><code class="docutils literal notranslate"><span class="pre">IsAuthenticated.has_permission()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.IsOwner"><code class="docutils literal notranslate"><span class="pre">IsOwner</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.IsOwner.check_actions"><code class="docutils literal notranslate"><span class="pre">IsOwner.check_actions</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.IsOwner.has_object_permission"><code class="docutils literal notranslate"><span class="pre">IsOwner.has_object_permission()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.IsOwner.lookup_field"><code class="docutils literal notranslate"><span class="pre">IsOwner.lookup_field</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.NOT"><code class="docutils literal notranslate"><span class="pre">NOT</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.NOT.has_permission"><code class="docutils literal notranslate"><span class="pre">NOT.has_permission()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.OR"><code class="docutils literal notranslate"><span class="pre">OR</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.OR.has_permission"><code class="docutils literal notranslate"><span class="pre">OR.has_permission()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.OperandHolder"><code class="docutils literal notranslate"><span class="pre">OperandHolder</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.OperationHolderMixin"><code class="docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.SingleOperandHolder"><code class="docutils literal notranslate"><span class="pre">SingleOperandHolder</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.WrappedDRFPermission"><code class="docutils literal notranslate"><span class="pre">WrappedDRFPermission</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.WrappedDRFPermission.can_connect"><code class="docutils literal notranslate"><span class="pre">WrappedDRFPermission.can_connect()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.WrappedDRFPermission.can_connect_by_object_permission"><code class="docutils literal notranslate"><span class="pre">WrappedDRFPermission.can_connect_by_object_permission()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.WrappedDRFPermission.has_permission"><code class="docutils literal notranslate"><span class="pre">WrappedDRFPermission.has_permission()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.WrappedDRFPermission.mapped_actions"><code class="docutils literal notranslate"><span class="pre">WrappedDRFPermission.mapped_actions</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.permissions.WrappedDRFPermission.permission"><code class="docutils literal notranslate"><span class="pre">WrappedDRFPermission.permission</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-channels_rest_framework.routings">channels_rest_framework.routings module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.routings.RoutingManager"><code class="docutils literal notranslate"><span class="pre">RoutingManager</span></code></a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.routings.RoutingManager.append"><code class="docutils literal notranslate"><span class="pre">RoutingManager.append()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.routings.RoutingManager.resolve"><code class="docutils literal notranslate"><span class="pre">RoutingManager.resolve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-channels_rest_framework.utils">channels_rest_framework.utils module</a><ul>
+<li><a class="reference internal" href="#channels_rest_framework.utils.ensure_async"><code class="docutils literal notranslate"><span class="pre">ensure_async()</span></code></a></li>
+<li><a class="reference internal" href="#channels_rest_framework.utils.request_from_scope"><code class="docutils literal notranslate"><span class="pre">request_from_scope()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-channels_rest_framework">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">channels_rest_framework</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">channels_rest_framework package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/channels_rest_framework.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="channels-rest-framework-package">
+<h1>channels_rest_framework package<a class="headerlink" href="#channels-rest-framework-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-channels_rest_framework.consumers">
+<span id="channels-rest-framework-consumers-module"></span><h2>channels_rest_framework.consumers module<a class="headerlink" href="#module-channels_rest_framework.consumers" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.consumers.</span></span><span class="sig-name descname"><span class="pre">AsyncAPIConsumer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase" title="channels_rest_framework.consumers.AsyncAPIConsumerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncAPIConsumerBase</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumer.available_actions">
+<span class="sig-name descname"><span class="pre">available_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumer.available_actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumer.routing">
+<span class="sig-name descname"><span class="pre">routing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#channels_rest_framework.routings.RoutingManager" title="channels_rest_framework.routings.RoutingManager"><span class="pre">RoutingManager</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;channels_rest_framework.routings.RoutingManager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumer.routing" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumer.websocket_connect">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">websocket_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumer.websocket_connect" title="Link to this definition"></a></dt>
+<dd><p>Called when a WebSocket connection is opened.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumer.websocket_disconnect">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">websocket_disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumer.websocket_disconnect" title="Link to this definition"></a></dt>
+<dd><p>Called when a WebSocket connection is closed. Base level so you don’t
+need to call super() all the time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumerBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.consumers.</span></span><span class="sig-name descname"><span class="pre">AsyncAPIConsumerBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncJsonWebsocketConsumer</span></code>, <a class="reference internal" href="#channels_rest_framework.handlers.AsyncAPIActionHandler" title="channels_rest_framework.handlers.AsyncAPIActionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncAPIActionHandler</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumerBase.available_actions">
+<span class="sig-name descname"><span class="pre">available_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase.available_actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumerBase.receive_json">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receive_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase.receive_json" title="Link to this definition"></a></dt>
+<dd><p>Called with decoded JSON content.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.consumers.AsyncAPIConsumerBase.routing">
+<span class="sig-name descname"><span class="pre">routing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#channels_rest_framework.routings.RoutingManager" title="channels_rest_framework.routings.RoutingManager"><span class="pre">RoutingManager</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;channels_rest_framework.routings.RoutingManager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#channels_rest_framework.consumers.AsyncAPIConsumerBase.routing" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-channels_rest_framework.decorators">
+<span id="channels-rest-framework-decorators-module"></span><h2>channels_rest_framework.decorators module<a class="headerlink" href="#module-channels_rest_framework.decorators" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="channels_rest_framework.decorators.async_action">
+<span class="sig-prename descclassname"><span class="pre">channels_rest_framework.decorators.</span></span><span class="sig-name descname"><span class="pre">async_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.decorators.async_action" title="Link to this definition"></a></dt>
+<dd><p>Set the method as async action.
+Note that use <cite>async_to_sync</cite>
+if you call the method decorated by this decorator in sync method</p>
+</dd></dl>
+
+</section>
+<section id="module-channels_rest_framework.exceptions">
+<span id="channels-rest-framework-exceptions-module"></span><h2>channels_rest_framework.exceptions module<a class="headerlink" href="#module-channels_rest_framework.exceptions" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.ActionMissingException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.exceptions.</span></span><span class="sig-name descname"><span class="pre">ActionMissingException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.exceptions.ActionMissingException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIException</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.ActionMissingException.default_code">
+<span class="sig-name descname"><span class="pre">default_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'method_not_allowed'</span></em><a class="headerlink" href="#channels_rest_framework.exceptions.ActionMissingException.default_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.ActionMissingException.default_detail">
+<span class="sig-name descname"><span class="pre">default_detail</span></span><a class="headerlink" href="#channels_rest_framework.exceptions.ActionMissingException.default_detail" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.ActionMissingException.status_code">
+<span class="sig-name descname"><span class="pre">status_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">405</span></em><a class="headerlink" href="#channels_rest_framework.exceptions.ActionMissingException.status_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.RouteMissingException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.exceptions.</span></span><span class="sig-name descname"><span class="pre">RouteMissingException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.exceptions.RouteMissingException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIException</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.RouteMissingException.default_code">
+<span class="sig-name descname"><span class="pre">default_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'method_not_allowed'</span></em><a class="headerlink" href="#channels_rest_framework.exceptions.RouteMissingException.default_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.RouteMissingException.default_detail">
+<span class="sig-name descname"><span class="pre">default_detail</span></span><a class="headerlink" href="#channels_rest_framework.exceptions.RouteMissingException.default_detail" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.exceptions.RouteMissingException.status_code">
+<span class="sig-name descname"><span class="pre">status_code</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">404</span></em><a class="headerlink" href="#channels_rest_framework.exceptions.RouteMissingException.status_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="channels-rest-framework-generics-module">
+<h2>channels_rest_framework.generics module<a class="headerlink" href="#channels-rest-framework-generics-module" title="Link to this heading"></a></h2>
+</section>
+<section id="module-channels_rest_framework.handlers">
+<span id="channels-rest-framework-handlers-module"></span><h2>channels_rest_framework.handlers module<a class="headerlink" href="#module-channels_rest_framework.handlers" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.APIActionHandlerMetaclass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.handlers.</span></span><span class="sig-name descname"><span class="pre">APIActionHandlerMetaclass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.APIActionHandlerMetaclass" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></p>
+<p>Metaclass that records action and route methods</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.handlers.</span></span><span class="sig-name descname"><span class="pre">AsyncAPIActionHandler</span></span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler" title="channels_rest_framework.handlers.AsyncActionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.available_actions">
+<span class="sig-name descname"><span class="pre">available_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.available_actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.check_object_permissions">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_object_permissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.check_object_permissions" title="Link to this definition"></a></dt>
+<dd><p>Check if the action should be permitted.
+Raises an appropriate exception if the request is not permitted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.check_permissions">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_permissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.check_permissions" title="Link to this definition"></a></dt>
+<dd><p>Check if the action should be permitted.
+Raises an appropriate exception if the request is not permitted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.get_permissions">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_permissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><span class="pre">BasePermission</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.get_permissions" title="Link to this definition"></a></dt>
+<dd><p>Instantiates and returns the list of permissions that this view requires.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.handle_action">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.handle_action" title="Link to this definition"></a></dt>
+<dd><p>Handle a call for a given action.</p>
+<p>This method checks permissions and handles exceptions sending
+them back over the ws connection to the client.</p>
+<p>If there is no action listed on the consumer for this action name
+a <cite>MethodNotAllowed</cite> error is sent back over the ws connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.handle_exception">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Exception</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.handle_exception" title="Link to this definition"></a></dt>
+<dd><p>Handle any exception that occurs, by sending an appropriate message</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.receive_json">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receive_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.receive_json" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.reply">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.reply" title="Link to this definition"></a></dt>
+<dd><p>Send a json response back to the client.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncAPIActionHandler.routing">
+<span class="sig-name descname"><span class="pre">routing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#channels_rest_framework.routings.RoutingManager" title="channels_rest_framework.routings.RoutingManager"><span class="pre">RoutingManager</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;channels_rest_framework.routings.RoutingManager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#channels_rest_framework.handlers.AsyncAPIActionHandler.routing" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.handlers.</span></span><span class="sig-name descname"><span class="pre">AsyncActionHandler</span></span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Action Handler class</p>
+<p>Note: This class is “Action Handler” NOT Consumer
+When you want to use this as consumer, use consumers.AsyncAPIConsumer instead</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.as_aaah">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_aaah</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">initkwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.as_aaah" title="Link to this definition"></a></dt>
+<dd><p>Return an Async API Action Handler (not scream) single callable that
+instantiates a action handler instance per scope.
+Similar in purpose to Django’s as_view().</p>
+<p>initkwargs will be used to instantiate the action handler instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.available_actions">
+<span class="sig-name descname"><span class="pre">available_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.available_actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.close">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.close" title="Link to this definition"></a></dt>
+<dd><p>Closes the WebSocket from the server end</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.decode_json">
+<em class="property"><span class="pre">async</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">decode_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.decode_json" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.encode_json">
+<em class="property"><span class="pre">async</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.encode_json" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.routepatterns">
+<span class="sig-name descname"><span class="pre">routepatterns</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.routepatterns" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.routing">
+<span class="sig-name descname"><span class="pre">routing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#channels_rest_framework.routings.RoutingManager" title="channels_rest_framework.routings.RoutingManager"><span class="pre">RoutingManager</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;channels_rest_framework.routings.RoutingManager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.routing" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.send">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.send" title="Link to this definition"></a></dt>
+<dd><p>Sends a reply back down the WebSocket</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.handlers.AsyncActionHandler.send_json">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.handlers.AsyncActionHandler.send_json" title="Link to this definition"></a></dt>
+<dd><p>Encode the given content as JSON and send it to the client.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-channels_rest_framework.mixins">
+<span id="channels-rest-framework-mixins-module"></span><h2>channels_rest_framework.mixins module<a class="headerlink" href="#module-channels_rest_framework.mixins" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.CreateModelMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.mixins.</span></span><span class="sig-name descname"><span class="pre">CreateModelMixin</span></span><a class="headerlink" href="#channels_rest_framework.mixins.CreateModelMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Create a model instance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.CreateModelMixin.create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.CreateModelMixin.create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.CreateModelMixin.perform_create">
+<span class="sig-name descname"><span class="pre">perform_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serializer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.CreateModelMixin.perform_create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.DestroyModelMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.mixins.</span></span><span class="sig-name descname"><span class="pre">DestroyModelMixin</span></span><a class="headerlink" href="#channels_rest_framework.mixins.DestroyModelMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Destroy a model instance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.DestroyModelMixin.destroy">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">destroy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.DestroyModelMixin.destroy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.DestroyModelMixin.perform_destroy">
+<span class="sig-name descname"><span class="pre">perform_destroy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.DestroyModelMixin.perform_destroy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.ListModelMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.mixins.</span></span><span class="sig-name descname"><span class="pre">ListModelMixin</span></span><a class="headerlink" href="#channels_rest_framework.mixins.ListModelMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>List a queryset.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.ListModelMixin.list">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.ListModelMixin.list" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.RetrieveModelMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.mixins.</span></span><span class="sig-name descname"><span class="pre">RetrieveModelMixin</span></span><a class="headerlink" href="#channels_rest_framework.mixins.RetrieveModelMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Retrieve a model instance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.RetrieveModelMixin.retrieve">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retrieve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.RetrieveModelMixin.retrieve" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.UpdateModelMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.mixins.</span></span><span class="sig-name descname"><span class="pre">UpdateModelMixin</span></span><a class="headerlink" href="#channels_rest_framework.mixins.UpdateModelMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Update a model instance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.UpdateModelMixin.partial_update">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">partial_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.UpdateModelMixin.partial_update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.UpdateModelMixin.perform_update">
+<span class="sig-name descname"><span class="pre">perform_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serializer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.UpdateModelMixin.perform_update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.mixins.UpdateModelMixin.update">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.mixins.UpdateModelMixin.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-channels_rest_framework.permissions">
+<span id="channels-rest-framework-permissions-module"></span><h2>channels_rest_framework.permissions module<a class="headerlink" href="#module-channels_rest_framework.permissions" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.AND">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">AND</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">op2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.AND" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.AND.has_permission">
+<span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.AND.has_permission" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.AllowAny">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">AllowAny</span></span><a class="headerlink" href="#channels_rest_framework.permissions.AllowAny" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
+<p>Allow any permission class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.AllowAny.has_object_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.AllowAny.has_object_permission" title="Link to this definition"></a></dt>
+<dd><p>Called on every websocket message sent
+before the corresponding action handler is called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.AllowAny.has_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.AllowAny.has_permission" title="Link to this definition"></a></dt>
+<dd><p>Called on every websocket message sent
+before the corresponding action handler is called.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.BasePermission">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">BasePermission</span></span><a class="headerlink" href="#channels_rest_framework.permissions.BasePermission" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base permission class</p>
+<p class="rubric">Notes</p>
+<p>You should extend this class
+and override the <cite>has_permission</cite> method to create your own permission class.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">async</span> <span class="pre">has_permission</span> <span class="pre">(scope,</span> <span class="pre">consumer,</span> <span class="pre">action,</span> <span class="pre">**kwargs)</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.BasePermission.can_connect">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.BasePermission.can_connect" title="Link to this definition"></a></dt>
+<dd><p>Called during connection to validate
+if a given client can establish a websocket connection.</p>
+<p>By default, this returns True and permits all connections to be made.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.BasePermission.can_connect_by_object_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect_by_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.BasePermission.can_connect_by_object_permission" title="Link to this definition"></a></dt>
+<dd><p>Called during connection to validate
+if a given client can establish a websocket connection.</p>
+<p>By default, this returns True and permits all connections to be made.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.BasePermission.has_object_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.BasePermission.has_object_permission" title="Link to this definition"></a></dt>
+<dd><p>Called on every websocket message sent
+before the corresponding action handler is called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.BasePermission.has_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.BasePermission.has_permission" title="Link to this definition"></a></dt>
+<dd><p>Called on every websocket message sent
+before the corresponding action handler is called.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.BasePermissionMetaclass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">BasePermissionMetaclass</span></span><a class="headerlink" href="#channels_rest_framework.permissions.BasePermissionMetaclass" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.permissions.OperationHolderMixin" title="channels_rest_framework.permissions.OperationHolderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.IsAuthenticated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">IsAuthenticated</span></span><a class="headerlink" href="#channels_rest_framework.permissions.IsAuthenticated" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
+<p>Allow authenticated users</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.IsAuthenticated.has_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.IsAuthenticated.has_permission" title="Link to this definition"></a></dt>
+<dd><p>Called on every websocket message sent
+before the corresponding action handler is called.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.IsOwner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">IsOwner</span></span><a class="headerlink" href="#channels_rest_framework.permissions.IsOwner" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
+<p>Allow object owner</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.IsOwner.check_actions">
+<span class="sig-name descname"><span class="pre">check_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#channels_rest_framework.permissions.IsOwner.check_actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.IsOwner.has_object_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.IsOwner.has_object_permission" title="Link to this definition"></a></dt>
+<dd><p>Called on every websocket message sent
+before the corresponding action handler is called.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.IsOwner.lookup_field">
+<span class="sig-name descname"><span class="pre">lookup_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'user'</span></em><a class="headerlink" href="#channels_rest_framework.permissions.IsOwner.lookup_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.NOT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">NOT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.NOT" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.NOT.has_permission">
+<span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.NOT.has_permission" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.OR">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">OR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">op2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.OR" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.OR.has_permission">
+<span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.OR.has_permission" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.OperandHolder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">OperandHolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op1_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op2_class</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.OperandHolder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.permissions.OperationHolderMixin" title="channels_rest_framework.permissions.OperationHolderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.OperationHolderMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">OperationHolderMixin</span></span><a class="headerlink" href="#channels_rest_framework.permissions.OperationHolderMixin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.SingleOperandHolder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">SingleOperandHolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op1_class</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.SingleOperandHolder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.permissions.OperationHolderMixin" title="channels_rest_framework.permissions.OperationHolderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.WrappedDRFPermission">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.permissions.</span></span><span class="sig-name descname"><span class="pre">WrappedDRFPermission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">permission</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BasePermission</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.permissions.WrappedDRFPermission" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#channels_rest_framework.permissions.BasePermission" title="channels_rest_framework.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
+<p>Used to wrap an instance of DRF permissions class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.WrappedDRFPermission.can_connect">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.WrappedDRFPermission.can_connect" title="Link to this definition"></a></dt>
+<dd><p>Called during connection to validate
+if a given client can establish a websocket connection.</p>
+<p>By default, this returns True and permits all connections to be made.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.WrappedDRFPermission.can_connect_by_object_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect_by_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.WrappedDRFPermission.can_connect_by_object_permission" title="Link to this definition"></a></dt>
+<dd><p>Called during connection to validate
+if a given client can establish a websocket connection.</p>
+<p>By default, this returns True and permits all connections to be made.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.WrappedDRFPermission.has_permission">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncConsumer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#channels_rest_framework.permissions.WrappedDRFPermission.has_permission" title="Link to this definition"></a></dt>
+<dd><p>Called on every websocket message sent
+before the corresponding action handler is called.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.WrappedDRFPermission.mapped_actions">
+<span class="sig-name descname"><span class="pre">mapped_actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'connect':</span> <span class="pre">'HEAD',</span> <span class="pre">'create':</span> <span class="pre">'PUT',</span> <span class="pre">'list':</span> <span class="pre">'GET',</span> <span class="pre">'retrieve':</span> <span class="pre">'GET',</span> <span class="pre">'update':</span> <span class="pre">'PATCH'}</span></em><a class="headerlink" href="#channels_rest_framework.permissions.WrappedDRFPermission.mapped_actions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="channels_rest_framework.permissions.WrappedDRFPermission.permission">
+<span class="sig-name descname"><span class="pre">permission</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BasePermission</span></em><a class="headerlink" href="#channels_rest_framework.permissions.WrappedDRFPermission.permission" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-channels_rest_framework.routings">
+<span id="channels-rest-framework-routings-module"></span><h2>channels_rest_framework.routings module<a class="headerlink" href="#module-channels_rest_framework.routings" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="channels_rest_framework.routings.RoutingManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channels_rest_framework.routings.</span></span><span class="sig-name descname"><span class="pre">RoutingManager</span></span><a class="headerlink" href="#channels_rest_framework.routings.RoutingManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.routings.RoutingManager.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">URLPattern</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#channels_rest_framework.routings.RoutingManager.append" title="Link to this definition"></a></dt>
+<dd><p>Add new route to be managed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> (<em>URLPattern</em>) – The URLPattern instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channels_rest_framework.routings.RoutingManager.resolve">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler" title="channels_rest_framework.handlers.AsyncActionHandler"><span class="pre">AsyncActionHandler</span></a></span></span><a class="headerlink" href="#channels_rest_framework.routings.RoutingManager.resolve" title="Link to this definition"></a></dt>
+<dd><p>Resolve a given route</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route</strong> (<em>str</em>) – The route path to be resolved</p></li>
+<li><p><strong>scope</strong> (<em>dict</em>) – The scope dict</p></li>
+<li><p><strong>receive</strong> (<em>Callable</em>) – The recieve function to be passed into a matched action handler</p></li>
+<li><p><strong>send</strong> (<em>Callable</em>) – The send function to be passed into a matched action handler</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matched action handler</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#channels_rest_framework.handlers.AsyncActionHandler" title="channels_rest_framework.handlers.AsyncActionHandler">AsyncActionHandler</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-channels_rest_framework.utils">
+<span id="channels-rest-framework-utils-module"></span><h2>channels_rest_framework.utils module<a class="headerlink" href="#module-channels_rest_framework.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="channels_rest_framework.utils.ensure_async">
+<span class="sig-prename descclassname"><span class="pre">channels_rest_framework.utils.</span></span><span class="sig-name descname"><span class="pre">ensure_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#channels_rest_framework.utils.ensure_async" title="Link to this definition"></a></dt>
+<dd><p>Ensure method is async if not wrap it in database_sync_to_async.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="channels_rest_framework.utils.request_from_scope">
+<span class="sig-prename descclassname"><span class="pre">channels_rest_framework.utils.</span></span><span class="sig-name descname"><span class="pre">request_from_scope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HttpRequest</span></span></span><a class="headerlink" href="#channels_rest_framework.utils.request_from_scope" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-channels_rest_framework">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-channels_rest_framework" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, jjjkkkjjj.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
