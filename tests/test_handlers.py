@@ -49,7 +49,7 @@ async def test_decorator_sync_route():
         'data': {'pk': 2},
         'action': 'test_async_action',
         'route': 'test_async_child_route/test_async_action/',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.send_json_to(
@@ -67,7 +67,7 @@ async def test_decorator_sync_route():
         'data': {'pk': 3, 'sync': True},
         'action': 'test_sync_action',
         'route': 'test_sync_child_route/test_sync_action/',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.disconnect()
@@ -124,7 +124,7 @@ async def test_decorator_async_route():
         'data': {'pk': 2},
         'action': 'test_async_action',
         'route': 'test_async_child_route/2/',
-        'response_status': 200,
+        'status': 200,
     }
     assert kwargs_results['test_async_action'] == dict(child_id='2')
 
@@ -143,7 +143,7 @@ async def test_decorator_async_route():
         'data': {'pk': 3, 'sync': True},
         'action': 'test_sync_action',
         'route': 'test_sync_child_route/3/',
-        'response_status': 200,
+        'status': 200,
     }
     assert kwargs_results['test_sync_action'] == dict(child_id='3')
 

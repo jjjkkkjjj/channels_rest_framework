@@ -35,7 +35,7 @@ async def test_decorator_action():
         'data': {'pk': 2},
         'action': 'test_async_action',
         'route': '',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.send_json_to({'action': 'test_sync_action', 'pk': 3})
@@ -47,7 +47,7 @@ async def test_decorator_action():
         'data': {'pk': 3, 'sync': True},
         'action': 'test_sync_action',
         'route': '',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.disconnect()

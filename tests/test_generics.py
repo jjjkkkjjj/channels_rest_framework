@@ -52,7 +52,7 @@ async def test_create_api_action_handler():
         'errors': [],
         'action': 'create',
         'route': 'test_async_child_route/',
-        'response_status': 201,
+        'status': 201,
     }
     instance = await database_sync_to_async(TestModel.objects.get)(
         pk=response_data['id']
@@ -77,7 +77,7 @@ async def test_create_api_action_handler():
         'errors': [],
         'action': 'create',
         'route': 'test_sync_child_route/',
-        'response_status': 201,
+        'status': 201,
     }
     instance = await database_sync_to_async(TestModel.objects.get)(
         pk=response_data['id']
@@ -119,7 +119,7 @@ async def test_create_api_consumer():
         'errors': [],
         'action': 'create',
         'route': '',
-        'response_status': 201,
+        'status': 201,
     }
     instance = await database_sync_to_async(TestModel.objects.get)(
         pk=response_data['id']
@@ -144,7 +144,7 @@ async def test_create_api_consumer():
         'errors': [],
         'action': 'create',
         'route': '',
-        'response_status': 201,
+        'status': 201,
     }
     instance = await database_sync_to_async(TestModel.objects.get)(
         pk=response_data['id']
@@ -201,7 +201,7 @@ async def test_list_api_action_handler():
         'errors': [],
         'action': 'list',
         'route': 'test_async_child_route/',
-        'response_status': 200,
+        'status': 200,
     }
     assert len(response_data) == 2
     for data, ans in zip(response_data, answers):
@@ -222,7 +222,7 @@ async def test_list_api_action_handler():
         'errors': [],
         'action': 'list',
         'route': 'test_sync_child_route/',
-        'response_status': 200,
+        'status': 200,
     }
     assert len(response_data) == 2
     for data, ans in zip(response_data, answers):
@@ -268,7 +268,7 @@ async def test_list_api_consumer():
         'errors': [],
         'action': 'list',
         'route': '',
-        'response_status': 200,
+        'status': 200,
     }
     assert len(response_data) == 2
     for data, ans in zip(response_data, answers):
@@ -287,7 +287,7 @@ async def test_list_api_consumer():
         'errors': [],
         'action': 'list',
         'route': '',
-        'response_status': 200,
+        'status': 200,
     }
     assert len(response_data) == 2
     for data, ans in zip(response_data, answers):
@@ -345,7 +345,7 @@ async def test_retrieve_api_action_handler():
         'data': answers[0],
         'action': 'retrieve',
         'route': f'test_async_child_route/{answers[0]["id"]}/',
-        'response_status': 200,
+        'status': 200,
     }
 
     ### sync path
@@ -362,7 +362,7 @@ async def test_retrieve_api_action_handler():
         'data': answers[1],
         'action': 'retrieve',
         'route': f'test_sync_child_route/{answers[1]["id"]}/',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.disconnect()
@@ -399,7 +399,7 @@ async def test_retrieve_api_consumer():
         'data': data,
         'action': 'retrieve',
         'route': '',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.disconnect()
@@ -455,7 +455,7 @@ async def test_update_api_action_handler():
         'errors': [],
         'action': 'partial_update',
         'route': f'test_async_child_route/{original_answers[0]["id"]}/',
-        'response_status': 200,
+        'status': 200,
     }
     assert response_data != original_answers[0]
     assert response_data['title'] == 'titletitle'
@@ -477,7 +477,7 @@ async def test_update_api_action_handler():
 
     response = await communicator.receive_json_from()
 
-    response['response_status'] = 400
+    response['status'] = 400
 
     # success
     await communicator.send_json_to(
@@ -499,7 +499,7 @@ async def test_update_api_action_handler():
         'errors': [],
         'action': 'update',
         'route': f'test_async_child_route/{original_answers[0]["id"]}/',
-        'response_status': 200,
+        'status': 200,
     }
     assert response_data != original_answers[0]
     assert response_data['title'] == 'titletitle'

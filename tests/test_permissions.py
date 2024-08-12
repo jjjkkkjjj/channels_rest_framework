@@ -50,7 +50,7 @@ async def test_parent_is_authenticated(user):
         'data': None,
         'action': 'test_async_action',
         'route': 'test_async_child_route/test_async_action/',
-        'response_status': 403,
+        'status': 403,
     }
     assert len(errors) > 0
 
@@ -75,7 +75,7 @@ async def test_parent_is_authenticated(user):
         'data': {'pk': 3, 'sync': True},
         'action': 'test_sync_action',
         'route': 'test_sync_child_route/test_sync_action/',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.disconnect()
@@ -134,7 +134,7 @@ async def test_child_is_authenticated(user):
         'data': {'pk': 3, 'sync': True},
         'action': 'test_parent_sync_action',
         'route': '',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.send_json_to(
@@ -151,7 +151,7 @@ async def test_child_is_authenticated(user):
         'data': {'pk': 2},
         'action': 'test_parent_async_action',
         'route': '',
-        'response_status': 200,
+        'status': 200,
     }
 
     ### Child Action ###
@@ -171,7 +171,7 @@ async def test_child_is_authenticated(user):
         'data': None,
         'action': 'test_sync_action',
         'route': 'test_sync_child_route/test_sync_action/',
-        'response_status': 403,
+        'status': 403,
     }
     assert len(errors) > 0
 
@@ -196,7 +196,7 @@ async def test_child_is_authenticated(user):
         'data': {'pk': 3, 'sync': True},
         'action': 'test_sync_action',
         'route': 'test_sync_child_route/test_sync_action/',
-        'response_status': 200,
+        'status': 200,
     }
 
     await communicator.disconnect()

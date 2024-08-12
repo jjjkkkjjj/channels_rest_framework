@@ -310,7 +310,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
             'data': data,
             'action': action,
             'route': route,
-            'response_status': status,
+            'status': status,
         }
 
         await self.send_json(payload)
