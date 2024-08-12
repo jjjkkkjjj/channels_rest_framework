@@ -4,14 +4,14 @@ from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
 from django.urls import path, re_path
 
-from channels_rest_framework.consumers import AsyncAPIConsumer
-from channels_rest_framework.decorators import async_action
-from channels_rest_framework.generics import (
+from rest_framework_channels.consumers import AsyncAPIConsumer
+from rest_framework_channels.decorators import async_action
+from rest_framework_channels.generics import (
     RetrieveAPIActionHandler,
     RetrieveAPIConsumer,
 )
-from channels_rest_framework.handlers import AsyncAPIActionHandler
-from channels_rest_framework.permissions import IsAuthenticated, IsOwner
+from rest_framework_channels.handlers import AsyncAPIActionHandler
+from rest_framework_channels.permissions import IsAuthenticated, IsOwner
 
 from .models import TestWithAuthorModel
 from .serializers import TestWithAuthorSerializer

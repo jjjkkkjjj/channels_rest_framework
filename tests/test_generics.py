@@ -3,8 +3,8 @@ from channels.db import database_sync_to_async
 from django.forms.models import model_to_dict
 from django.urls import path, re_path
 
-from channels_rest_framework import generics
-from channels_rest_framework.consumers import AsyncAPIConsumer
+from rest_framework_channels import generics
+from rest_framework_channels.consumers import AsyncAPIConsumer
 
 from .models import TestModel
 from .serializers import TestSerializer

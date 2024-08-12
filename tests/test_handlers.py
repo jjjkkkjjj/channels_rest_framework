@@ -1,9 +1,9 @@
 import pytest
 from django.urls import path, re_path
 
-from channels_rest_framework.consumers import AsyncAPIConsumer
-from channels_rest_framework.decorators import async_action
-from channels_rest_framework.handlers import AsyncAPIActionHandler
+from rest_framework_channels.consumers import AsyncAPIConsumer
+from rest_framework_channels.decorators import async_action
+from rest_framework_channels.handlers import AsyncAPIActionHandler
 
 from .websocket import ExtendedWebsocketCommunicator
 

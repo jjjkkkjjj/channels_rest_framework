@@ -1,7 +1,7 @@
-channels_rest_framework
+rest_framework_channels
 =======================
 
 .. toctree::
    :maxdepth: 4
 
-   channels_rest_framework
+   rest_framework_channels

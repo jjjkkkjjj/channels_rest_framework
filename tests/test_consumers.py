@@ -1,7 +1,7 @@
 import pytest
 
-from channels_rest_framework.consumers import AsyncAPIConsumer
-from channels_rest_framework.decorators import async_action
+from rest_framework_channels.consumers import AsyncAPIConsumer
+from rest_framework_channels.decorators import async_action
 
 from .websocket import ExtendedWebsocketCommunicator
 

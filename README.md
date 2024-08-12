@@ -1,18 +1,18 @@
-# channels_rest_framework
+# rest_framework_channels
 
 The enhanced modules for REST WebSockets using django channels.
 
 ## Installation
 
 ```bash
-pip install channels_rest_framework
+pip install rest_framework_channels
 ```
 
 ## Introduction
 
-channels_rest_framework is the enhanced modules for REST WebSockets using django [channels](https://channels.readthedocs.io/en/latest/).
+rest_framework_channels is the enhanced modules for REST WebSockets using django [channels](https://channels.readthedocs.io/en/latest/).
 
-You can use `serializers` and `queryset` in [rest_framework](https://www.django-rest-framework.org/) in channels_rest_framework. Also, we are ready for similar `permissions` and `generics` too.
+You can use `serializers` and `queryset` in [rest_framework](https://www.django-rest-framework.org/) in rest_framework_channels. Also, we are ready for similar `permissions` and `generics` too.
 
 ### Example
 
@@ -73,7 +73,7 @@ you will get the below response. This mechanism is very similar with original re
 
 ## Details
 
-For more details, see [docs](https://jjjkkkjjj.github.io/channels_rest_framework/).
+For more details, see [docs](https://jjjkkkjjj.github.io/rest_framework_channels/).
 
 ## Development
 

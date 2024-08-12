@@ -7,7 +7,7 @@ Submodules
 channels\_rest\_framework.consumers module
 ------------------------------------------
 
-.. automodule:: channels_rest_framework.consumers
+.. automodule:: rest_framework_channels.consumers
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ channels\_rest\_framework.consumers module
 channels\_rest\_framework.decorators module
 -------------------------------------------
 
-.. automodule:: channels_rest_framework.decorators
+.. automodule:: rest_framework_channels.decorators
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ channels\_rest\_framework.decorators module
 channels\_rest\_framework.exceptions module
 -------------------------------------------
 
-.. automodule:: channels_rest_framework.exceptions
+.. automodule:: rest_framework_channels.exceptions
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ channels\_rest\_framework.exceptions module
 channels\_rest\_framework.generics module
 -----------------------------------------
 
-.. automodule:: channels_rest_framework.generics
+.. automodule:: rest_framework_channels.generics
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ channels\_rest\_framework.generics module
 channels\_rest\_framework.handlers module
 -----------------------------------------
 
-.. automodule:: channels_rest_framework.handlers
+.. automodule:: rest_framework_channels.handlers
    :members:
    :undoc-members:
    :show-inheritance:
@@ -47,7 +47,7 @@ channels\_rest\_framework.handlers module
 channels\_rest\_framework.mixins module
 ---------------------------------------
 
-.. automodule:: channels_rest_framework.mixins
+.. automodule:: rest_framework_channels.mixins
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +55,7 @@ channels\_rest\_framework.mixins module
 channels\_rest\_framework.permissions module
 --------------------------------------------
 
-.. automodule:: channels_rest_framework.permissions
+.. automodule:: rest_framework_channels.permissions
    :members:
    :undoc-members:
    :show-inheritance:
@@ -63,7 +63,7 @@ channels\_rest\_framework.permissions module
 channels\_rest\_framework.routings module
 -----------------------------------------
 
-.. automodule:: channels_rest_framework.routings
+.. automodule:: rest_framework_channels.routings
    :members:
    :undoc-members:
    :show-inheritance:
@@ -71,7 +71,7 @@ channels\_rest\_framework.routings module
 channels\_rest\_framework.utils module
 --------------------------------------
 
-.. automodule:: channels_rest_framework.utils
+.. automodule:: rest_framework_channels.utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -79,7 +79,7 @@ channels\_rest\_framework.utils module
 Module contents
 ---------------
 
-.. automodule:: channels_rest_framework
+.. automodule:: rest_framework_channels
    :members:
    :undoc-members:
    :show-inheritance:

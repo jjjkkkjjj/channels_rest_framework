@@ -1,9 +1,9 @@
 # Installation
 
-You can install channels_rest_framework via pip.
+You can install rest_framework_channels via pip.
 
 ```bash
-pip install channels_rest_framework
+pip install rest_framework_channels
 ```
 
 ## Setting
