@@ -79,3 +79,19 @@ class UpdateModelMixin:
     def partial_update(self, data, *args, **kwargs):
         kwargs['partial'] = True
         return async_to_sync(self.update)(data, *args, **kwargs)
+
+
+class DestroyModelMixin:
+    """
+    Destroy a model instance.
+    """
+
+    @async_action()
+    def destroy(self, *args, **kwargs):
+        action = kwargs.get('action', 'destory')
+        instance = self.get_object(action)
+        self.perform_destroy(instance)
+        return None, status.HTTP_204_NO_CONTENT
+
+    def perform_destroy(self, instance):
+        instance.delete()

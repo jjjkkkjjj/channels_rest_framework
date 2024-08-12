@@ -391,3 +391,107 @@ async def test_update_api_action_handler():
     assert response_data == model_to_dict(instance)
 
     await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
+async def test_destroy_api_action_handler():
+
+    class ChildActionHandler(generics.DestroyAPIActionHandler):
+        serializer_class = TestSerializer
+        queryset = TestModel.objects.all()
+
+    class ParentConsumer(AsyncAPIConsumer):
+
+        routepatterns = [
+            re_path(
+                r'test_child_route/(?P<pk>[-\w]+)/$',
+                ChildActionHandler.as_aaah(),
+            ),
+        ]
+
+    # Test a normal connection
+    communicator = ExtendedWebsocketCommunicator(ParentConsumer(), '/testws/')
+
+    # Create 2 TestModel
+    answers = [
+        dict(id=1, title='Title', content='Content'),
+        dict(id=2, title='Title2', content='Content2'),
+    ]
+    for ans in answers:
+        await database_sync_to_async(TestModel.objects.get_or_create)(**ans)
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    # exists
+    await database_sync_to_async(TestModel.objects.get)(pk=answers[0]['id'])
+
+    await communicator.send_json_to(
+        {
+            'action': 'destroy',
+            'route': f'test_child_route/{answers[0]["id"]}/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    assert response == {
+        'errors': [],
+        'data': None,
+        'action': 'destroy',
+        'route': f'test_child_route/{answers[0]["id"]}/',
+        'status': 204,
+    }
+
+    with pytest.raises(TestModel.DoesNotExist):
+        await database_sync_to_async(TestModel.objects.get)(pk=answers[0]['id'])
+
+    await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
+async def test_destroy_api_consumer():
+
+    class ParentConsumer(generics.DestroyAPIConsumer):
+        serializer_class = TestSerializer
+        queryset = TestModel.objects.all()
+
+    # Test a normal connection
+    # url is mocked by this kwargs
+    communicator = ExtendedWebsocketCommunicator(
+        ParentConsumer(), '/testws/1/', kwargs=dict(pk=1)
+    )
+
+    # Create TestModel
+    data = dict(id=1, title='Title', content='Content')
+    await database_sync_to_async(TestModel.objects.get_or_create)(**data)
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    # exists
+    await database_sync_to_async(TestModel.objects.get)(pk=data['id'])
+
+    await communicator.send_json_to(
+        {
+            'action': 'destroy',
+            'route': f'test_child_route/{data["id"]}/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    assert response == {
+        'errors': [],
+        'data': None,
+        'action': 'destroy',
+        'route': f'test_child_route/{data["id"]}/',
+        'status': 204,
+    }
+
+    with pytest.raises(TestModel.DoesNotExist):
+        await database_sync_to_async(TestModel.objects.get)(pk=data['id'])
+
+    await communicator.disconnect()
