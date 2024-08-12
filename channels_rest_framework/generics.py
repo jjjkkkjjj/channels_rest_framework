@@ -193,6 +193,33 @@ class DestroyAPIActionHandler(mixins.DestroyModelMixin, GenericAsyncAPIActionHan
     pass
 
 
+class ListCreateAPIActionHandler(
+    mixins.ListModelMixin, mixins.CreateModelMixin, GenericAsyncAPIActionHandler
+):
+    pass
+
+
+class RetrieveUpdateAPIActionHandler(
+    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericAsyncAPIActionHandler
+):
+    pass
+
+
+class RetrieveDestroyAPIActionHandler(
+    mixins.RetrieveModelMixin, mixins.DestroyModelMixin, GenericAsyncAPIActionHandler
+):
+    pass
+
+
+class RetrieveUpdateDestroyAPIActionHandler(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericAsyncAPIActionHandler,
+):
+    pass
+
+
 '''
 ======= Consumer ========
 '''
@@ -219,4 +246,31 @@ class UpdateAPIConsumer(mixins.UpdateModelMixin, GenericAsyncAPIConsumer):
 
 
 class DestroyAPIConsumer(mixins.DestroyModelMixin, GenericAsyncAPIConsumer):
+    pass
+
+
+class ListCreateAPIConsumer(
+    mixins.ListModelMixin, mixins.CreateModelMixin, GenericAsyncAPIConsumer
+):
+    pass
+
+
+class RetrieveUpdateAPIConsumer(
+    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericAsyncAPIConsumer
+):
+    pass
+
+
+class RetrieveDestroyAPIConsumer(
+    mixins.RetrieveModelMixin, mixins.DestroyModelMixin, GenericAsyncAPIConsumer
+):
+    pass
+
+
+class RetrieveUpdateDestroyAPIConsumer(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericAsyncAPIConsumer,
+):
     pass
