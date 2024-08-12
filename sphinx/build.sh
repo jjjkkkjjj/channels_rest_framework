@@ -1,3 +1,4 @@
-sphinx-apidoc -f -o ./source ../
+rm -rf ../docs/* _build/html/
+sphinx-apidoc -f -o ./source ../channels_rest_framework
 make html
-cp -r _build/html/* ../docs/
+cp -ar _build/html/. ../docs/
