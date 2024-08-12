@@ -403,3 +403,111 @@ async def test_retrieve_api_consumer():
     }
 
     await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
+async def test_update_api_action_handler():
+
+    class ChildActionHandler(generics.UpdateAPIActionHandler):
+        serializer_class = TestSerializer
+        queryset = TestModel.objects.all()
+
+    class ParentConsumer(AsyncAPIConsumer):
+
+        routepatterns = [
+            re_path(
+                r'test_async_child_route/(?P<pk>[-\w]+)/$',
+                ChildActionHandler.as_aaah(),
+            ),
+            re_path(
+                r'test_sync_child_route/(?P<pk>[-\w]+)/$', ChildActionHandler.as_aaah()
+            ),
+        ]
+
+    # Test a normal connection
+    communicator = ExtendedWebsocketCommunicator(ParentConsumer(), '/testws/')
+
+    # Create 2 TestModel
+    original_answers = [
+        dict(id=1, title='Title', content='Content'),
+        dict(id=2, title='Title2', content='Content2'),
+    ]
+    for ans in original_answers:
+        await database_sync_to_async(TestModel.objects.get_or_create)(**ans)
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    ##### partial_update #####
+    await communicator.send_json_to(
+        {
+            'action': 'partial_update',
+            'data': {'title': 'titletitle'},
+            'route': f'test_async_child_route/{original_answers[0]["id"]}/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    response_data = response.pop('data')
+    assert response == {
+        'errors': [],
+        'action': 'partial_update',
+        'route': f'test_async_child_route/{original_answers[0]["id"]}/',
+        'response_status': 200,
+    }
+    assert response_data != original_answers[0]
+    assert response_data['title'] == 'titletitle'
+
+    instance = await database_sync_to_async(TestModel.objects.get)(
+        pk=response_data['id']
+    )
+    assert response_data == model_to_dict(instance)
+
+    ##### update #####
+    # failure
+    await communicator.send_json_to(
+        {
+            'action': 'update',
+            'data': {'title': 'titletitle'},
+            'route': f'test_async_child_route/{original_answers[0]["id"]}/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+
+    response['response_status'] = 400
+
+    # success
+    await communicator.send_json_to(
+        {
+            'action': 'update',
+            'data': {
+                'id': original_answers[0]['id'],
+                'title': 'titletitle',
+                'content': 'contentcontent',
+            },
+            'route': f'test_async_child_route/{original_answers[0]["id"]}/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+
+    response_data = response.pop('data')
+    assert response == {
+        'errors': [],
+        'action': 'update',
+        'route': f'test_async_child_route/{original_answers[0]["id"]}/',
+        'response_status': 200,
+    }
+    assert response_data != original_answers[0]
+    assert response_data['title'] == 'titletitle'
+    assert response_data['content'] == 'contentcontent'
+
+    instance = await database_sync_to_async(TestModel.objects.get)(
+        pk=response_data['id']
+    )
+    assert response_data == model_to_dict(instance)
+
+    await communicator.disconnect()

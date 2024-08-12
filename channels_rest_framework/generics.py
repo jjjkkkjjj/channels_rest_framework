@@ -185,6 +185,10 @@ class RetrieveAPIActionHandler(mixins.RetrieveModelMixin, GenericAsyncAPIActionH
     pass
 
 
+class UpdateAPIActionHandler(mixins.UpdateModelMixin, GenericAsyncAPIActionHandler):
+    pass
+
+
 '''
 ======= Consumer ========
 '''
@@ -203,4 +207,8 @@ class ListAPIConsumer(mixins.ListModelMixin, GenericAsyncAPIConsumer):
 
 
 class RetrieveAPIConsumer(mixins.RetrieveModelMixin, GenericAsyncAPIConsumer):
+    pass
+
+
+class UpdateAPIConsumer(mixins.UpdateModelMixin, GenericAsyncAPIConsumer):
     pass
