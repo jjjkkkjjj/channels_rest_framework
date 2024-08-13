@@ -24,6 +24,7 @@ from typing_extensions import Self
 from .exceptions import ActionMissingException
 from .permissions import BasePermission, WrappedDRFPermission
 from .routings import RoutingManager
+from .settings import api_settings
 from .utils import ensure_async
 
 # Get an instance of a logger
@@ -167,7 +168,7 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
 
 
 class AsyncAPIActionHandler(AsyncActionHandler):
-    permission_classes = ()
+    permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
 
     async def get_permissions(self, **kwargs) -> list[BasePermission]:
         """

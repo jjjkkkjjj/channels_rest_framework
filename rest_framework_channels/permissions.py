@@ -1,13 +1,11 @@
+# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/permissions.py
 from __future__ import annotations
 
-# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/permissions.py
 from typing import TYPE_CHECKING, Any, Union
 
 from channels.db import database_sync_to_async
 from django.db.models import Model
 from rest_framework.permissions import BasePermission as DRFBasePermission
-
-from rest_framework_channels.handlers import AsyncActionHandler
 
 from .utils import ensure_async, request_from_scope
 
