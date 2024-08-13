@@ -192,7 +192,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
         for permission in await self.get_permissions(**kwargs):
 
             if not await ensure_async(permission.has_permission)(
-                scope=self.scope, consumer=self, action=action, **kwargs
+                scope=self.scope, handler=self, action=action, **kwargs
             ):
                 raise PermissionDenied()
 
@@ -204,7 +204,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
         for permission in await self.get_permissions(**kwargs):
 
             if not await ensure_async(permission.has_object_permission)(
-                scope=self.scope, consumer=self, action=action, obj=obj, **kwargs
+                scope=self.scope, handler=self, action=action, obj=obj, **kwargs
             ):
                 raise PermissionDenied()
 

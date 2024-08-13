@@ -48,7 +48,7 @@ class AsyncAPIConsumer(AsyncAPIConsumerBase):
         try:
             for permission in await self.get_permissions():
                 if not await ensure_async(permission.can_connect)(
-                    scope=self.scope, consumer=self, message=message
+                    scope=self.scope, handler=self, message=message
                 ):
                     raise PermissionDenied()
             await super().websocket_connect(message)

@@ -1,12 +1,16 @@
-# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/permissions.py
-from typing import Any, Union
+from __future__ import annotations
 
-from channels.consumer import AsyncConsumer
+# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/permissions.py
+from typing import TYPE_CHECKING, Any, Union
+
 from channels.db import database_sync_to_async
 from django.db.models import Model
 from rest_framework.permissions import BasePermission as DRFBasePermission
 
 from .utils import ensure_async, request_from_scope
+
+if TYPE_CHECKING:
+    from .handlers import AsyncActionHandler
 
 
 class OperationHolderMixin:
@@ -49,39 +53,39 @@ class OperandHolder(OperationHolderMixin):
 
 
 class AND:
-    def __init__(self, op1: 'BasePermission', op2: 'BasePermission'):
+    def __init__(self, op1: BasePermission, op2: BasePermission):
         self.op1 = op1
         self.op2 = op2
 
     def has_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
     ):
         return self.op1.has_permission(
-            scope, consumer, action, **kwargs
-        ) and self.op2.has_permission(scope, consumer, action, **kwargs)
+            scope, handler, action, **kwargs
+        ) and self.op2.has_permission(scope, handler, action, **kwargs)
 
 
 class OR:
-    def __init__(self, op1: 'BasePermission', op2: 'BasePermission'):
+    def __init__(self, op1: BasePermission, op2: BasePermission):
         self.op1 = op1
         self.op2 = op2
 
     def has_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
     ):
         return self.op1.has_permission(
-            scope, consumer, action, **kwargs
-        ) or self.op2.has_permission(scope, consumer, action, **kwargs)
+            scope, handler, action, **kwargs
+        ) or self.op2.has_permission(scope, handler, action, **kwargs)
 
 
 class NOT:
-    def __init__(self, op1: 'BasePermission'):
+    def __init__(self, op1: BasePermission):
         self.op1 = op1
 
     def has_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
     ):
-        return not self.op1.has_permission(scope, consumer, action, **kwargs)
+        return not self.op1.has_permission(scope, handler, action, **kwargs)
 
 
 class BasePermissionMetaclass(OperationHolderMixin, type):
@@ -96,11 +100,11 @@ class BasePermission(metaclass=BasePermissionMetaclass):
         and override the `has_permission` method to create your own permission class.
 
     Methods:
-        async has_permission (scope, consumer, action, **kwargs)
+        async has_permission (scope, handler, action, **kwargs)
     """
 
     async def has_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
     ) -> bool:
         """
         Called on every websocket message sent
@@ -111,7 +115,7 @@ class BasePermission(metaclass=BasePermissionMetaclass):
     async def has_object_permission(
         self,
         scope: dict[str, Any],
-        consumer: AsyncConsumer,
+        handler: AsyncActionHandler,
         action: str,
         obj: Model,
         **kwargs,
@@ -123,7 +127,7 @@ class BasePermission(metaclass=BasePermissionMetaclass):
         return True
 
     async def can_connect(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, message=None
+        self, scope: dict[str, Any], handler: AsyncActionHandler, message=None
     ) -> bool:
         """
         Called during connection to validate
@@ -134,7 +138,7 @@ class BasePermission(metaclass=BasePermissionMetaclass):
         return True
 
     async def can_connect_by_object_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, obj: Model, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, obj: Model, **kwargs
     ) -> bool:
         """
         Called during connection to validate
@@ -149,14 +153,14 @@ class AllowAny(BasePermission):
     """Allow any permission class"""
 
     async def has_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
     ) -> bool:
         return True
 
     async def has_object_permission(
         self,
         scope: dict[str, Any],
-        consumer: AsyncConsumer,
+        handler: AsyncActionHandler,
         action: str,
         obj: Model,
         **kwargs,
@@ -168,7 +172,7 @@ class IsAuthenticated(BasePermission):
     """Allow authenticated users"""
 
     async def has_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
     ) -> bool:
         user = scope.get('user')
         if not user:
@@ -186,7 +190,7 @@ class IsOwner(BasePermission):
     async def has_object_permission(
         self,
         scope: dict[str, Any],
-        consumer: AsyncConsumer,
+        handler: AsyncActionHandler,
         action: str,
         obj: Model,
         **kwargs,
@@ -231,24 +235,24 @@ class WrappedDRFPermission(BasePermission):
         self.permission = permission
 
     async def has_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, action: str, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
     ) -> bool:
         request = request_from_scope(scope)
         request.method = self.mapped_actions.get(action, action.upper())
-        return await ensure_async(self.permission.has_permission)(request, consumer)
+        return await ensure_async(self.permission.has_permission)(request, handler)
 
     async def can_connect_by_object_permission(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, obj: Model, **kwargs
+        self, scope: dict[str, Any], handler: AsyncActionHandler, obj: Model, **kwargs
     ) -> bool:
         request = request_from_scope(scope)
         request.method = self.mapped_actions.get('connect', 'CONNECT')
         return await ensure_async(self.permission.has_object_permission)(
-            request, consumer, obj
+            request, handler, obj
         )
 
     async def can_connect(
-        self, scope: dict[str, Any], consumer: AsyncConsumer, message=None
+        self, scope: dict[str, Any], handler: AsyncActionHandler, message=None
     ) -> bool:
         request = request_from_scope(scope)
         request.method = self.mapped_actions.get('connect', 'CONNECT')
-        return await ensure_async(self.permission.has_permission)(request, consumer)
+        return await ensure_async(self.permission.has_permission)(request, handler)
