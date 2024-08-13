@@ -48,6 +48,8 @@ Here is the generic action list corresponding to HTTP request method.
 | partial_update |    PATCH     |
 |     remove     |    DELETE    |
 
+For more details in [generics section](Generics).
+
 ### Retrieve Example
 
 We use the below model and serializer as example.

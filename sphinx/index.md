@@ -11,6 +11,7 @@
 
 ./docs/00_introduction/index
 ./docs/01_installation/index
+./docs/02_generics/index
 ./source/modules
 ```
 

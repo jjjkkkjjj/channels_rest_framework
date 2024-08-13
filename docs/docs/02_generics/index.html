@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generics &mdash; rest_framework_channels 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="rest_framework_channels" href="../../source/modules.html" />
+    <link rel="prev" title="Installation" href="../01_installation/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            rest_framework_channels
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00_introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_installation/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#retrieve-example">Retrieve Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#list-example">List Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">rest_framework_channels</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rest_framework_channels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Generics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/docs/02_generics/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="generics">
+<h1>Generics<a class="headerlink" href="#generics" title="Link to this heading"></a></h1>
+<p>Let’s see the generic action list corresponding to HTTP request method again.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>action</p></th>
+<th class="head text-center"><p>HTTP request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>retrieve</p></td>
+<td class="text-center"><p>GET</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>list</p></td>
+<td class="text-center"><p>GET</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>create</p></td>
+<td class="text-center"><p>POST</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>update</p></td>
+<td class="text-center"><p>PUT</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>partial_update</p></td>
+<td class="text-center"><p>PATCH</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>remove</p></td>
+<td class="text-center"><p>DELETE</p></td>
+</tr>
+</tbody>
+</table>
+<p>Since the action is corresponding to the HTTP request, we can implement generics <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>s and <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s almost same as <a class="reference external" href="https://www.django-rest-framework.org/api-guide/generic-views/">rest_framework’s generics</a>.
+If you have already understood the rest_framework’s generics, there will be no need to explain.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Action Handler</p></th>
+<th class="head text-center"><p>Consumer</p></th>
+<th class="head text-center"><p>rest_framework’s Generics</p></th>
+<th class="head text-center"><p>action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>GenericAsyncAPIActionHandler</p></td>
+<td class="text-center"><p>GenericAsyncAPIConsumer</p></td>
+<td class="text-center"><p>GenericAPIView</p></td>
+<td class="text-center"><p>n/a</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>CreateAPIActionHandler</p></td>
+<td class="text-center"><p>CreateAPIConsumer</p></td>
+<td class="text-center"><p>CreateAPIView</p></td>
+<td class="text-center"><p>create</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>ListAPIActionHandler</p></td>
+<td class="text-center"><p>ListAPIConsumer</p></td>
+<td class="text-center"><p>ListAPIView</p></td>
+<td class="text-center"><p>list</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RetrieveAPIActionHandler</p></td>
+<td class="text-center"><p>RetrieveAPIConsumer</p></td>
+<td class="text-center"><p>RetrieveAPIView</p></td>
+<td class="text-center"><p>retrieve</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>UpdateAPIActionHandler</p></td>
+<td class="text-center"><p>UpdateAPIConsumer</p></td>
+<td class="text-center"><p>UpdateAPIView</p></td>
+<td class="text-center"><p>update/partial_update</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DestroyAPIActionHandler</p></td>
+<td class="text-center"><p>DestroyAPIConsumer</p></td>
+<td class="text-center"><p>DestroyAPIView</p></td>
+<td class="text-center"><p>remove</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>ListCreateAPIActionHandler</p></td>
+<td class="text-center"><p>ListCreateAPIConsumer</p></td>
+<td class="text-center"><p>ListCreateAPIView</p></td>
+<td class="text-center"><p>list/create</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RetrieveUpdateAPIActionHandler</p></td>
+<td class="text-center"><p>RetrieveUpdateAPIConsumer</p></td>
+<td class="text-center"><p>RetrieveUpdateAPIView</p></td>
+<td class="text-center"><p>retrieve/update/partial_update</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>RetrieveDestroyAPIActionHandler</p></td>
+<td class="text-center"><p>RetrieveDestroyAPIConsumer</p></td>
+<td class="text-center"><p>RetrieveDestroyAPIView</p></td>
+<td class="text-center"><p>retrieve/remove</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RetrieveUpdateDestroyAPIActionHandler</p></td>
+<td class="text-center"><p>RetrieveUpdateDestroyAPIConsumer</p></td>
+<td class="text-center"><p>RetrieveUpdateDestroyAPIView</p></td>
+<td class="text-center"><p>retrieve/update/partial_update/remove</p></td>
+</tr>
+</tbody>
+</table>
+<section id="retrieve-example">
+<h2>Retrieve Example<a class="headerlink" href="#retrieve-example" title="Link to this heading"></a></h2>
+<p>Let’s see the <code class="docutils literal notranslate"><span class="pre">retrieve</span></code> example. You should inherit <code class="docutils literal notranslate"><span class="pre">RetrieveAPIActionHandler</span></code> to your <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code> like this;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.consumers</span> <span class="kn">import</span> <span class="n">AsyncAPIConsumer</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+
+<span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">RetrieveAPIActionHandler</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">AsyncAPIConsumer</span><span class="p">):</span>
+    <span class="c1"># You can define the routing inside the consumer similar with original django&#39;s urlpatterns</span>
+    <span class="n">routepatterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">re_path</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s1">&#39;test_child_route/(?P&lt;pk&gt;[-\w]+)/$&#39;</span><span class="p">,</span>
+            <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">(),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>When you send the below json after establishing the connection,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span> <span class="c1"># Similar with GET method of HTTP request</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>you will get the below response. This mechanism is very similar with original rest_framework!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;content&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="list-example">
+<h2>List Example<a class="headerlink" href="#list-example" title="Link to this heading"></a></h2>
+<p>Let’s see the <code class="docutils literal notranslate"><span class="pre">list</span></code> example. We show the example of <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> here. You should inherit <code class="docutils literal notranslate"><span class="pre">ListAPIConsumer</span></code> to your <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> like this;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIConsumer</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>When you send the below json after establishing the connection,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;list&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>you will get the below response. This mechanism is very similar with original rest_framework!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;content&#39;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;title2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;content2&#39;</span>
+        <span class="p">},</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../01_installation/index.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../source/modules.html" class="btn btn-neutral float-right" title="rest_framework_channels" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, jjjkkkjjj.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
