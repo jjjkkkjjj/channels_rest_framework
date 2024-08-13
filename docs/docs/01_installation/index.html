@@ -20,7 +20,9 @@
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="rest_framework_channels" href="../../source/modules.html" />
+    <link rel="prev" title="Routing" href="../00_introduction/02_routing.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,8 +45,13 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00_introduction/index.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting">Setting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">rest_framework_channels</a></li>
 </ul>
 
         </div>
@@ -63,7 +70,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/docs/installation.md/index.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/docs/01_installation/index.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -79,14 +86,43 @@
 </div>
 <section id="setting">
 <h2>Setting<a class="headerlink" href="#setting" title="Link to this heading"></a></h2>
-<p>You can set the</p>
+<p>After installing it, you should insert <code class="docutils literal notranslate"><span class="pre">'rest_framework_channels'</span></code> in the <code class="docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Websocket</span>
+    <span class="s1">&#39;daphne&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;channels&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;rest_framework_channels&#39;</span><span class="p">,</span> <span class="c1"># add</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>You can configure the default classes and so on in <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">REST_FRAMEWORK_CHANNELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DEFAULT_PERMISSION_CLASSES&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;rest_framework_channels.permissions.AllowAny&#39;</span>
+    <span class="p">],</span>
+    <span class="c1"># Generic action handler behavior</span>
+    <span class="s1">&#39;DEFAULT_PAGINATION_CLASS&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s1">&#39;DEFAULT_FILTER_BACKENDS&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="c1"># Pagination</span>
+    <span class="s1">&#39;PAGE_SIZE&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The configuration for all settings except <code class="docutils literal notranslate"><span class="pre">DEFAULT_PERMISSION_CLASSES</span></code> is same as original rest_framework.
+See <a class="reference external" href="https://www.django-rest-framework.org/api-guide/settings/">docs</a> for more details.</p>
+</div>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../00_introduction/02_routing.html" class="btn btn-neutral float-left" title="Routing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../source/modules.html" class="btn btn-neutral float-right" title="rest_framework_channels" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

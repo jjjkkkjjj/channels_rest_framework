@@ -60,6 +60,8 @@
 <li class="toctree-l2"><a class="reference internal" href="02_routing.html">Routing</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../01_installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">rest_framework_channels</a></li>
 </ul>
 
         </div>
@@ -79,7 +81,7 @@
           <li class="breadcrumb-item"><a href="index.html">Introduction</a></li>
       <li class="breadcrumb-item active">Action</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/docs/introduction/00_action.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/docs/00_introduction/00_action.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -98,7 +100,7 @@ Thanks to <code class="docutils literal notranslate"><span class="pre">ActionHan
 <p>Note that all <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>s in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.handlers</span></code> and <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.consumers</span></code> are inherited from <code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code> which is the base class of <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>. Therefore, <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> is also <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.</p>
 </div>
 <p class="plantuml">
-<img src="../../_images/plantuml-b6c6264d92a7868f51f1a9c6865a96f0ce97d40b.png" alt="group channels
+<img src="../../_images/plantuml-734a7193f53b6c4479c07f7d916fe9170544fbbd.png" alt="group channels
     Client -&gt; Consumer: connect
     return accept
 end

@@ -9,8 +9,9 @@
 :maxdepth: 2
 :caption: Contents
 
-./docs/introduction/index
-./docs/installation/index
+./docs/00_introduction/index
+./docs/01_installation/index
+./source/modules
 ```
 
 ## Indices and tables
