@@ -7,6 +7,8 @@ from channels.db import database_sync_to_async
 from django.db.models import Model
 from rest_framework.permissions import BasePermission as DRFBasePermission
 
+from rest_framework_channels.handlers import AsyncActionHandler
+
 from .utils import ensure_async, request_from_scope
 
 if TYPE_CHECKING:
@@ -178,6 +180,15 @@ class IsAuthenticated(BasePermission):
         if not user:
             return False
         return user.pk and user.is_authenticated
+
+
+class IsAuthenticatedStrictly(IsAuthenticated):
+    """Allow authenticated users"""
+
+    async def can_connect(
+        self, scope: dict[str, Any], handler: AsyncActionHandler, message=None
+    ) -> bool:
+        return await super().has_permission(scope, handler, message)
 
 
 class IsOwner(BasePermission):
