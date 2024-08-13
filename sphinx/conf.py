@@ -24,7 +24,10 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.githubpages',
     'myst_parser',
+    'sphinxcontrib.plantuml',
 ]
+plantuml_output_format = 'png'
+plantuml_syntax_error_image = True
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'tests']

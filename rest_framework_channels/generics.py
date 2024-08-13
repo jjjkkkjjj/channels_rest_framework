@@ -5,11 +5,11 @@ from asgiref.sync import async_to_sync
 from django.db.models import Model, QuerySet
 from rest_framework.generics import get_object_or_404
 from rest_framework.serializers import Serializer
-from rest_framework.settings import api_settings
 
 from . import mixins
 from .consumers import AsyncAPIConsumer
 from .handlers import AsyncAPIActionHandler
+from .settings import api_settings
 
 
 class GenericAsyncAPIActionHandler(AsyncAPIActionHandler):

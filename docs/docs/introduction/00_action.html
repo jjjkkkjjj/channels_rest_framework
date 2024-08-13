@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Action &mdash; rest_framework_channels 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Action Handler" href="01_action_handler.html" />
+    <link rel="prev" title="Introduction" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            rest_framework_channels
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Action</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generics-action-list">Generics Action List</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#retrieve-example">Retrieve Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-example">Create Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#define-your-custom-action">Define your custom action</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="01_action_handler.html">Action Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_routing.html">Routing</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rest_framework_channels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Introduction</a></li>
+      <li class="breadcrumb-item active">Action</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/docs/introduction/00_action.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="action">
+<h1>Action<a class="headerlink" href="#action" title="Link to this heading"></a></h1>
+<p>Action is a concept of rest_framework_channels to handle the message. Action is similar with HTTP request method, moreover you can define the original action flexibly.</p>
+<p>The client establishes the connection to the server using websocket, first.
+Once establishing the connection, you can send the messages with any actions. All actions will be handled by <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code> (detailed in next section) which is similar with <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>.
+Thanks to <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>, you can handle with all actions very easily.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that all <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>s in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.handlers</span></code> and <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.consumers</span></code> are inherited from <code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code> which is the base class of <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>. Therefore, <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> is also <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.</p>
+</div>
+<p class="plantuml">
+<img src="../../_images/plantuml-c5fa3a5f8723c63ba515c2229fe518052679653d.png" alt="group channels
+    Client -&gt; Consumer: connect
+    return accept
+end
+
+group rest_framework_channels
+    Client -&gt; Consumer: action
+
+    Consumer -&gt; ActionHandler: action
+    return response
+
+    Consumer -&gt; Client: response
+end
+
+group channels
+    Client -&gt; Consumer: disconnect
+    return accept
+end"/>
+</p>
+<section id="generics-action-list">
+<h2>Generics Action List<a class="headerlink" href="#generics-action-list" title="Link to this heading"></a></h2>
+<p>We are ready for generics <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code> (such like <a class="reference external" href="https://www.django-rest-framework.org/api-guide/generic-views/">rest_framework’s generics view</a>). Thanks to these generics, you can implement the codes handling with some actions very easily. And these generics interfaces are almost same as the rest_framework’s generics view. That’s why you can implement the websockets code easily!</p>
+<p>Here is the generic action list corresponding to HTTP request method.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>action</p></th>
+<th class="head text-center"><p>HTTP request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>retrieve</p></td>
+<td class="text-center"><p>GET</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>list</p></td>
+<td class="text-center"><p>GET</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>create</p></td>
+<td class="text-center"><p>POST</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>update</p></td>
+<td class="text-center"><p>PUT</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>partial_update</p></td>
+<td class="text-center"><p>PATCH</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>remove</p></td>
+<td class="text-center"><p>DELETE</p></td>
+</tr>
+</tbody>
+</table>
+<section id="retrieve-example">
+<h3>Retrieve Example<a class="headerlink" href="#retrieve-example" title="Link to this heading"></a></h3>
+<p>We use the below model and serializer as example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple model to test with.&quot;&quot;&quot;</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TestSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">TestModel</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.consumers</span> <span class="kn">import</span> <span class="n">AsyncAPIConsumer</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+
+<span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">RetrieveAPIActionHandler</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">AsyncAPIConsumer</span><span class="p">):</span>
+    <span class="c1"># You can define the routing inside the consumer similar with original django&#39;s urlpatterns</span>
+    <span class="n">routepatterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">re_path</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s1">&#39;test_child_route/(?P&lt;pk&gt;[-\w]+)/$&#39;</span><span class="p">,</span>
+            <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">(),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>When you send the below json after establishing the connection,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span> <span class="c1"># Similar with GET method of HTTP request</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>you will get the below response. This mechanism is very similar with original rest_framework!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;content&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="create-example">
+<h3>Create Example<a class="headerlink" href="#create-example" title="Link to this heading"></a></h3>
+<p>As mentioned before, <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s in the rest_framework_channels is also <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.
+When you give your consumer inherit with <code class="docutils literal notranslate"><span class="pre">generics.CreateAPIConsumer</span></code> and write down the serializer and queryset, you are all set to create a model!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIConsumer</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>After establishing the connection and sending the below json,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;create&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Content&#39;</span>
+        <span class="c1"># route: &#39;&#39; # you don&#39;t need specify the route because of handled by Consumer</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>the new model will be created and you will get the below response.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;create&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Content&#39;</span>
+    <span class="p">}</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">201</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="define-your-custom-action">
+<h2>Define your custom action<a class="headerlink" href="#define-your-custom-action" title="Link to this heading"></a></h2>
+<p>When you want to handle with your custom action, you can define the handler method warapped <code class="docutils literal notranslate"><span class="pre">async_action</span></code> decorator.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels.handlers</span> <span class="kn">import</span> <span class="n">AsyncAPIActionHandler</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.decorators</span> <span class="kn">import</span> <span class="n">async_action</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.consumers</span> <span class="kn">import</span> <span class="n">AsyncAPIConsumer</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+
+<span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">AsyncAPIActionHandler</span><span class="p">):</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+
+    <span class="nd">@async_action</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">your_custom_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Note: you should return the data and status code.</span>
+        <span class="k">return</span> <span class="p">{</span> 
+            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;your_custom_action will be handled&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;model_id&#39;</span><span class="p">:</span> <span class="n">pk</span>
+        <span class="p">},</span> <span class="mi">200</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">AsyncAPIConsumer</span><span class="p">):</span>
+    <span class="n">routepatterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">re_path</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s1">&#39;test_child_route/(?P&lt;pk&gt;[-\w]+)/$&#39;</span><span class="p">,</span>
+            <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">(),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>After establishing the connection and sending the below json,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;your_custom_action&#39;</span><span class="p">,</span> <span class="c1"># your method name will be action&#39;s name directly</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/5/&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>the new model will be created and you will get the below response.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;your_custom_action&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;your_custom_action will be handled&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;model_id&#39;</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/5/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>As you can guess from the decorator’s name <code class="docutils literal notranslate"><span class="pre">async_action</span></code>, your decorated method will be converted into the ASYNC method. That’s why when you want to call this method in sync method, you should use <code class="docutils literal notranslate"><span class="pre">async_to_sync</span></code> in <a class="reference external" href="https://asgi.readthedocs.io/en/latest/">asgiref</a>.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">asgiref.sync</span> <span class="kn">import</span> <span class="n">async_to_sync</span>
+
+<span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">AsyncAPIActionHandler</span><span class="p">):</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+
+    <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">your_sync_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">async_to_sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">your_custom_action</span><span class="p">)(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="o">...</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="01_action_handler.html" class="btn btn-neutral float-right" title="Action Handler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, jjjkkkjjj.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

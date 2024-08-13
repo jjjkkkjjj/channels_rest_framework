@@ -32,12 +32,17 @@ class TestSerializer(ModelSerializer):
 ```
 
 ```python
+from rest_framework_channels import generics
+from rest_framework_channels.consumers import AsyncAPIConsumer
+from rest_framework_channels.permissions import IsAuthenticated
+
 class ChildActionHandler(generics.RetrieveAPIActionHandler):
     serializer_class = TestSerializer
     queryset = TestModel.objects.all()
+    permission_classes = (IsAuthenticated,)
 
 class ParentConsumer(AsyncAPIConsumer):
-
+    # You can define the routing inside the consumer similar with original django's urlpatterns
     routepatterns = [
         re_path(
             r'test_child_route/(?P<pk>[-\w]+)/$',
@@ -71,6 +76,18 @@ you will get the below response. This mechanism is very similar with original re
 }
 ```
 
+As you can see `permission_classes`, you will be rejected when you send that json without login.
+
+```python
+{
+    'errors': ['Some Error Messages']
+    'data': None,
+    'action': 'retrieve',
+    'route': 'test_child_route/1/',
+    'status': 403,
+}
+```
+
 ## Details
 
 For more details, see [docs](https://jjjkkkjjj.github.io/rest_framework_channels/).
@@ -88,6 +105,7 @@ pip install twine
 
 ```bash
 cd sphinx
+sudo apt-get -y install plantuml
 pip install -r requirements.txt
 ```
 
