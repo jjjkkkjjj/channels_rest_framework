@@ -32,7 +32,9 @@ jobs:
       - name: Install
         run: |
           pip install "${{ matrix.django }}"
-          pip install .[tests]
+          pip install .[tests,dephne]
+          pip uninstall -y channels
+          python -m pip install -U channels["daphne"]
       - name: Freeze
         run: pip freeze
       - name: Tests
