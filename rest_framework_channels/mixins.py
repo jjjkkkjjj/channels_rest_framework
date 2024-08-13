@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from asgiref.sync import async_to_sync
 from rest_framework import status
 

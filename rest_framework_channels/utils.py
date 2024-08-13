@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/scope_utils.py
 import asyncio
 from typing import Any, Callable, Dict

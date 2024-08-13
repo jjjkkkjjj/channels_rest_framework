@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 from channels.db import database_sync_to_async
 from django.forms.models import model_to_dict

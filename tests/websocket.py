@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from urllib.parse import unquote, urlparse
 
 from channels.db import database_sync_to_async

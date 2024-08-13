@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # reference: https://github.com/encode/django-rest-framework/blob/master/rest_framework/generics.py
 from typing import Any
 

@@ -1,6 +1,6 @@
-# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/permissions.py
 from __future__ import annotations
 
+# reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/permissions.py
 from typing import TYPE_CHECKING, Any, Union
 
 from channels.db import database_sync_to_async

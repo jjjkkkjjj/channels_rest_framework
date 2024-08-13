@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/decorators.py
 import asyncio
 from functools import wraps

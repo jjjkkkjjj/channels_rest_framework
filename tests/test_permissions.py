@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async

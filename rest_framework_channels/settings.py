@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from django.conf import settings
 from django.core.signals import setting_changed
 from rest_framework.settings import perform_import
