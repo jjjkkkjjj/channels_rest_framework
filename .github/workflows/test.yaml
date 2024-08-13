@@ -1,0 +1,39 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+
+jobs:
+  # services that need a DB
+  UnitTests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+        django:
+          - Django>=3.2,<3.3
+          - Django>=4.1,<4.2
+          - Django>=4.2,<4.3
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: |
+          pip install "${{ matrix.django }}"
+          pip install .[tests]
+      - name: Freeze
+        run: pip freeze
+      - name: Tests
+        run: pytest
