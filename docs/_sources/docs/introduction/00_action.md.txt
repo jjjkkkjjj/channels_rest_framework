@@ -29,7 +29,7 @@ Note that all `ActionHandler`s in `rest_framework_channels.handlers` and `Consum
 
     group channels
         Client -> Consumer: disconnect
-        return accept
+        return close
     end
 ```
 
@@ -160,10 +160,8 @@ When you want to handle with your custom action, you can define the handler meth
 from rest_framework_channels.handlers import AsyncAPIActionHandler
 from rest_framework_channels.decorators import async_action
 from rest_framework_channels.consumers import AsyncAPIConsumer
-from rest_framework_channels.permissions import IsAuthenticated
 
 class ChildActionHandler(AsyncAPIActionHandler):
-    permission_classes = (IsAuthenticated,)
 
     @async_action()
     def your_custom_action(self, pk, *args, **kwargs):

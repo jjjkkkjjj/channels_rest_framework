@@ -98,7 +98,7 @@ Thanks to <code class="docutils literal notranslate"><span class="pre">ActionHan
 <p>Note that all <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>s in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.handlers</span></code> and <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.consumers</span></code> are inherited from <code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code> which is the base class of <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>. Therefore, <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> is also <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.</p>
 </div>
 <p class="plantuml">
-<img src="../../_images/plantuml-c5fa3a5f8723c63ba515c2229fe518052679653d.png" alt="group channels
+<img src="../../_images/plantuml-b6c6264d92a7868f51f1a9c6865a96f0ce97d40b.png" alt="group channels
     Client -&gt; Consumer: connect
     return accept
 end
@@ -114,7 +114,7 @@ end
 
 group channels
     Client -&gt; Consumer: disconnect
-    return accept
+    return close
 end"/>
 </p>
 <section id="generics-action-list">
@@ -248,10 +248,8 @@ When you give your consumer inherit with <code class="docutils literal notransla
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels.handlers</span> <span class="kn">import</span> <span class="n">AsyncAPIActionHandler</span>
 <span class="kn">from</span> <span class="nn">rest_framework_channels.decorators</span> <span class="kn">import</span> <span class="n">async_action</span>
 <span class="kn">from</span> <span class="nn">rest_framework_channels.consumers</span> <span class="kn">import</span> <span class="n">AsyncAPIConsumer</span>
-<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
 
 <span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">AsyncAPIActionHandler</span><span class="p">):</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
 
     <span class="nd">@async_action</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">your_custom_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

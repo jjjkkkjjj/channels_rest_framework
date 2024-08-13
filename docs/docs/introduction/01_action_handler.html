@@ -48,7 +48,11 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="00_action.html">Action</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Action Handler</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Action Handler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#asyncapiactionhandler">AsyncAPIActionHandler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-permission">Custom Permission</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="02_routing.html">Routing</a></li>
 </ul>
 </li>
@@ -81,6 +85,87 @@
              
   <section id="action-handler">
 <h1>Action Handler<a class="headerlink" href="#action-handler" title="Link to this heading"></a></h1>
+<p>In this section, we introduce the <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.
+As mentioned before, the <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code> is the original class for handling the action in rest_framework_channels.
+The base class is <code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code> in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.handlers</span></code>.
+All <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>s and <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s in rest_framework_channels are inherited from it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code> will summarize its actions by itself when the instance (Async API Action Handler; the abbreviation is <code class="docutils literal notranslate"><span class="pre">aaah</span></code> which is similar as <code class="docutils literal notranslate"><span class="pre">asgi</span></code> in channels and <code class="docutils literal notranslate"><span class="pre">view</span></code> in django) is created.</p>
+<section id="asyncapiactionhandler">
+<h2>AsyncAPIActionHandler<a class="headerlink" href="#asyncapiactionhandler" title="Link to this heading"></a></h2>
+<p>We guess you will not take care the <code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code>. Instead, you may be interested in <code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler</span></code> inherited from <code class="docutils literal notranslate"><span class="pre">AsyncActionHandler</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler</span></code> handles with actions and permissions mainly.
+If you have already used <a class="reference external" href="https://www.django-rest-framework.org/">rest_framework</a>, it’s very easy to integrate the permission mechanism in rest_framework into your websocket project.
+Because <code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler</span></code>’s interface is almost same as <code class="docutils literal notranslate"><span class="pre">APIView</span></code> in rest_framework.</p>
+<p>Let’s see the permission example and you think you’ll make it easy to implement the permission.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels.handlers</span> <span class="kn">import</span> <span class="n">AsyncAPIActionHandler</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.decorators</span> <span class="kn">import</span> <span class="n">async_action</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.consumers</span> <span class="kn">import</span> <span class="n">AsyncAPIConsumer</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+
+<span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">AsyncAPIActionHandler</span><span class="p">):</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+
+    <span class="nd">@async_action</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">your_custom_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Note: you should return the data and status code.</span>
+        <span class="k">return</span> <span class="p">{</span> 
+            <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;your_custom_action will be handled&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;model_id&#39;</span><span class="p">:</span> <span class="n">pk</span>
+        <span class="p">},</span> <span class="mi">200</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">AsyncAPIConsumer</span><span class="p">):</span>
+    <span class="n">routepatterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">re_path</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s1">&#39;test_child_route/(?P&lt;pk&gt;[-\w]+)/$&#39;</span><span class="p">,</span>
+            <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">(),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>When your client is not authenticated, you’ll receive 403 as status.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;your_custom_action&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">403</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Thanks to this mechanism, you can configure the permissions flexibly. For example, after establishing the connection, any clients will be allowed to <code class="docutils literal notranslate"><span class="pre">retrieve</span></code> action and the clients with only owner users will be allowed to <code class="docutils literal notranslate"><span class="pre">create</span></code> action.</p>
+</section>
+<section id="custom-permission">
+<h2>Custom Permission<a class="headerlink" href="#custom-permission" title="Link to this heading"></a></h2>
+<p>You can define the custom permission by inheriting the <code class="docutils literal notranslate"><span class="pre">BasePermission</span></code> in <code class="docutils literal notranslate"><span class="pre">rest_framework_channels.permissions</span></code>.
+When you override the <code class="docutils literal notranslate"><span class="pre">has_permission</span></code> in <code class="docutils literal notranslate"><span class="pre">BasePermission</span></code>, your <code class="docutils literal notranslate"><span class="pre">has_permission</span></code> will be evaluated in <code class="docutils literal notranslate"><span class="pre">AsyncAPIActionHandler</span></code> for every <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>’s actions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">BasePermission</span>
+
+<span class="k">class</span> <span class="nc">Auth</span><span class="p">(</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">handler</span><span class="p">:</span> <span class="n">AsyncActionHandler</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        
+        <span class="k">return</span> <span class="n">check_have_authority</span><span class="p">(</span><span class="n">scope</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">])</span>
+
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the <code class="docutils literal notranslate"><span class="pre">scope</span></code> argument is channles one. See <a class="reference external" href="https://channels.readthedocs.io/en/stable/topics/consumers.html#scope">docs</a> for more details.</p>
+</div>
+<p>Of cource, you can restrict the connection as well. In case of restricting the connection, all you have to do is inheriting the <code class="docutils literal notranslate"><span class="pre">can_connect</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">BasePermission</span>
+
+<span class="k">class</span> <span class="nc">StrictAuth</span><span class="p">(</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">can_connect</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">handler</span><span class="p">:</span> <span class="n">AsyncActionHandler</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        
+        <span class="k">return</span> <span class="n">check_have_authority</span><span class="p">(</span><span class="n">scope</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">])</span>
+
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">can_connect</span></code> will be evaluated before establishing the connection. That’s why you can restrict the connection strictly.</p>
+</section>
 </section>
 
 
