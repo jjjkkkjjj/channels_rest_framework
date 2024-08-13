@@ -9,7 +9,7 @@ All `ActionHandler`s and `Consumer`s in rest_framework_channels are inherited fr
 
 ## AsyncAPIActionHandler
 
-We guess you will not take care the `AsyncActionHandler`. Instead, you may be interested in `AsyncAPIActionHandler` inherited from `AsyncActionHandler`.
+We guess you will not take care the `AsyncActionHandler` due to the core class. Instead, you may be interested in `AsyncAPIActionHandler` inherited from `AsyncActionHandler`.
 `AsyncAPIActionHandler` handles with actions and permissions mainly.
 If you have already used [rest_framework](https://www.django-rest-framework.org/), it's very easy to integrate the permission mechanism in rest_framework into your websocket project.
 Because `AsyncAPIActionHandler`'s interface is almost same as `APIView` in rest_framework.

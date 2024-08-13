@@ -115,3 +115,7 @@ pip install -r requirements.txt
 cd sphinx
 bash build.sh
 ```
+
+## Reference
+
+This project is VERY inspired by [djangochannelsrestframework](https://github.com/NilCoalescing/djangochannelsrestframework).

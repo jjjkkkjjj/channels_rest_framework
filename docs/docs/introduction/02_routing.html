@@ -80,6 +80,72 @@
              
   <section id="routing">
 <h1>Routing<a class="headerlink" href="#routing" title="Link to this heading"></a></h1>
+<p>You can distribute the actions separately using rest_framework_channels’ routing system.
+Let’s check rest_framework_channels’ sequence diagram again.</p>
+<p class="plantuml">
+<img src="../../_images/plantuml-b6c6264d92a7868f51f1a9c6865a96f0ce97d40b.png" alt="group channels
+    Client -&gt; Consumer: connect
+    return accept
+end
+
+group rest_framework_channels
+    Client -&gt; Consumer: action
+
+    Consumer -&gt; ActionHandler: action
+    return response
+
+    Consumer -&gt; Client: response
+end
+
+group channels
+    Client -&gt; Consumer: disconnect
+    return close
+end"/>
+</p>
+<p>As you can see the above diagram, The <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> send the actions into <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.
+You can define the routing species which <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code> will recieve the action.</p>
+<p>The definition of the routing is also easy due to the almost same as the original django’s routing one.
+The routing is defined inside the <code class="docutils literal notranslate"><span class="pre">AsyncAPIConsumer</span></code>. Here is the example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">re_path</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.consumers</span> <span class="kn">import</span> <span class="n">AsyncAPIConsumer</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span> <span class="nn">rest_framework_channels.decorators</span> <span class="kn">import</span> <span class="n">async_action</span>
+
+<span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">RetrieveAPIActionHandler</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
+
+    <span class="nd">@async_action</span>
+    <span class="k">def</span> <span class="nf">recieve_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;handled&#39;</span><span class="p">},</span> <span class="mi">200</span>
+
+    <span class="nd">@async_action</span>
+    <span class="k">def</span> <span class="nf">recieve_repath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;repath&#39;</span><span class="p">:</span> <span class="s1">&#39;handled&#39;</span><span class="p">},</span> <span class="mi">200</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">AsyncAPIConsumer</span><span class="p">):</span>
+    <span class="c1"># You can define the routing inside the consumer similar with original django&#39;s urlpatterns</span>
+    <span class="n">routepatterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">path</span><span class="p">(</span><span class="s1">&#39;test_child_route&#39;</span><span class="p">,</span> <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">()),</span>
+        <span class="n">re_path</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s1">&#39;test_child_route/(?P&lt;pk&gt;[-\w]+)/$&#39;</span><span class="p">,</span>
+            <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">(),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>There are some differences from the original django’s routing system.
+First, you should define the routing in <code class="docutils literal notranslate"><span class="pre">routepatterns</span></code> as class argument in the <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">Consumer</span></code> will distribute the action into the correct action’s method you defined using this <code class="docutils literal notranslate"><span class="pre">routepatterns</span></code>.
+Second, you should pass the <code class="docutils literal notranslate"><span class="pre">as_aaah()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">as_asgi()</span></code> or <code class="docutils literal notranslate"><span class="pre">as_view()</span></code> into the <code class="docutils literal notranslate"><span class="pre">path</span></code> and <code class="docutils literal notranslate"><span class="pre">re_path</span></code>.
+<code class="docutils literal notranslate"><span class="pre">as_aaah()</span></code> is class method. <code class="docutils literal notranslate"><span class="pre">aaah</span></code> is abbreviation for <strong>A</strong>sync <strong>A</strong>PI <strong>A</strong>ction <strong>H</strong>andler (not scream 😛).  Because this has similar interface with channels <code class="docutils literal notranslate"><span class="pre">asgi</span></code> and django’s <code class="docutils literal notranslate"><span class="pre">view</span></code>, you can use the original <code class="docutils literal notranslate"><span class="pre">path</span></code> and <code class="docutils literal notranslate"><span class="pre">re_path</span></code> function in <code class="docutils literal notranslate"><span class="pre">django.urls</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We do not support the <code class="docutils literal notranslate"><span class="pre">include</span></code> function. Shortly, you can’t define the nested routings.
+To do this, the separated <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code> is the workaround.</p>
+</div>
 </section>
 
 

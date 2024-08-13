@@ -13,11 +13,11 @@
 ./docs/installation/index
 ```
 
-```{include} ../README.md
-```
-
 ## Indices and tables
 
 * {ref}`genindex`
 * {ref}`modindex`
 * {ref}`search`
+
+```{include} ../README.md
+```
