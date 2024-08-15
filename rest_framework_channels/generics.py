@@ -1,17 +1,22 @@
 from __future__ import annotations
 
 # reference: https://github.com/encode/django-rest-framework/blob/master/rest_framework/generics.py
-from typing import Any
+from typing import Any, Optional
+from urllib.parse import unquote, urlparse
 
 from asgiref.sync import async_to_sync
 from django.db.models import Model, QuerySet
+from rest_framework import status
 from rest_framework.generics import get_object_or_404
+from rest_framework.pagination import BasePagination
+from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
 from . import mixins
 from .consumers import AsyncAPIConsumer
 from .handlers import AsyncAPIActionHandler
 from .settings import api_settings
+from .utils import request_from_scope
 
 
 class GenericAsyncAPIActionHandler(AsyncAPIActionHandler):
@@ -148,7 +153,7 @@ class GenericAsyncAPIActionHandler(AsyncAPIActionHandler):
         return queryset
 
     @property
-    def paginator(self):
+    def paginator(self) -> BasePagination:
         """
         The paginator instance associated with the view, or `None`.
         """
@@ -159,20 +164,55 @@ class GenericAsyncAPIActionHandler(AsyncAPIActionHandler):
                 self._paginator = self.pagination_class()
         return self._paginator
 
-    def paginate_queryset(self, queryset):
+    def paginate_queryset(self, queryset: QuerySet) -> QuerySet:
         """
         Return a single page of results, or `None` if pagination is disabled.
         """
         if self.paginator is None:
             return None
-        return self.paginator.paginate_queryset(queryset, self.request, view=self)
 
-    def get_paginated_response(self, data):
+        request = request_from_scope(self.scope)
+
+        return self.paginator.paginate_queryset(queryset, request, view=self)
+
+    def _modify_paginated_route(self, url: Optional[str]) -> Optional[str]:
+        """Modify the url returned by a paginator for action handler
+
+        Parameters
+        ----------
+        url : Optional[str]
+            The url returned by a paginator
+
+        Returns
+        -------
+        Optional[str]
+            The modified route with query params
+        """
+        if url is None:
+            return None
+        route = self.scope.get('route', '')
+        parsed_url = urlparse(url)
+        parsed_route = urlparse(route)
+        query = parsed_url.query
+        if query:
+            query = f'?{query}'
+        return f'{parsed_route.path}{query}'
+
+    def get_paginated_response(self, data: Any):
         """
         Return a paginated style `Response` object for the given output data.
         """
         assert self.paginator is not None
-        return self.paginator.get_paginated_response(data)
+        response: Response = self.paginator.get_paginated_response(data)
+        response_data = response.data
+
+        # modify the previous and the next url into route
+        response_data['next'] = self._modify_paginated_route(response_data['next'])
+        response_data['previous'] = self._modify_paginated_route(
+            response_data['previous']
+        )
+
+        return response_data, status.HTTP_200_OK
 
 
 class CreateAPIActionHandler(mixins.CreateModelMixin, GenericAsyncAPIActionHandler):

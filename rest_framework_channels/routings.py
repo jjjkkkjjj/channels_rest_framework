@@ -64,6 +64,7 @@ class RoutingManager:
                                 'args': outer.get('args', ()) + args,
                                 'kwargs': {**outer.get('kwargs', {}), **kwargs},
                             },
+                            route=route
                         ),
                         receive,
                         send,
