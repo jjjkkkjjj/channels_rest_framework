@@ -5,6 +5,7 @@ import json
 import logging
 from functools import partial, update_wrapper
 from typing import Callable, Optional
+from urllib.parse import parse_qs, urlencode, urlparse
 
 from asgiref.sync import async_to_sync
 from django.core.exceptions import ImproperlyConfigured
@@ -260,7 +261,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
                 )
                 response = await handler.handle_action(action, route, **kwargs)
             except NotFound:
-                # the action will be processed thid class
+                # the action will be processed this class
 
                 if action not in self.available_actions:
                     raise MethodNotAllowed(method=action) from None
@@ -271,6 +272,18 @@ class AsyncAPIActionHandler(AsyncActionHandler):
                 reply = partial(self.reply, action=action)
 
                 # the @action decorator will wrap non-async action into async ones.
+                # append query params to path_reamining if it exists
+                query_dict = {}
+                if route:
+                    query_dict.update(parse_qs(urlparse(route).query))
+
+                path_remaining = self.scope.get('path_remaining')
+                if path_remaining:
+                    query_dict.update(parse_qs(urlparse(path_remaining).query))
+
+                query = urlencode(query_dict, doseq=True)
+                if query:
+                    self.scope.update(dict(path_remaining=query))
 
                 response = await method(action=action, **kwargs)
 

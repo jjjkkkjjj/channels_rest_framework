@@ -287,6 +287,85 @@ async def test_pagenated_list_api_action_handler():
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.asyncio
+async def test_pagenated_list_api_consumer():
+
+    class TestPagination(PageNumberPagination):
+        page_size = 10
+        page_size_query_param = 'page_size'
+        max_page_size = 100
+
+    class ParentConsumer(generics.ListAPIConsumer):
+        serializer_class = TestSerializer
+        queryset = TestModel.objects.all()
+        pagination_class = TestPagination
+
+    # Test a normal connection
+    communicator = ExtendedWebsocketCommunicator(
+        ParentConsumer(), 'ws://127.0.0.1/testws/'
+    )
+
+    # Create 2 TestModel
+    answers = [dict(title=f'Title{i+1}', content=f'Content{i+1}') for i in range(100)]
+    for ans in answers:
+        await database_sync_to_async(TestModel.objects.get_or_create)(**ans)
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    await communicator.send_json_to(
+        {
+            'action': 'list',
+            'route': '?page=4',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    response_data = response.pop('data')
+    assert response == {
+        'errors': [],
+        'action': 'list',
+        'route': '?page=4',
+        'status': 200,
+    }
+    assert len(response_data['results']) == 10
+    assert response_data['count'] == 100
+    assert response_data['next'] == '?page=5'
+    assert response_data['previous'] == '?page=3'
+
+    for data, ans in zip(response_data['results'], answers[30:40]):
+        data.pop('id')
+        assert data == ans
+
+    await communicator.send_json_to(
+        {
+            'action': 'list',
+            'route': '?page=10',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    response_data = response.pop('data')
+    assert response == {
+        'errors': [],
+        'action': 'list',
+        'route': '?page=10',
+        'status': 200,
+    }
+    assert len(response_data['results']) == 10
+    assert response_data['count'] == 100
+    assert response_data['next'] is None
+    assert response_data['previous'] == '?page=9'
+
+    for data, ans in zip(response_data['results'], answers[90:100]):
+        data.pop('id')
+        assert data == ans
+
+    await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
 async def test_retrieve_api_action_handler():
 
     class ChildActionHandler(generics.RetrieveAPIActionHandler):

@@ -6,6 +6,7 @@ from typing import Any, Callable
 
 from channels.db import database_sync_to_async
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpRequest, QueryDict
 from rest_framework.request import Request
 
@@ -20,9 +21,6 @@ def ensure_async(method: Callable):
 
 
 def request_from_scope(scope: dict[str, Any]) -> Request:
-    from urllib.parse import urlparse
-
-    from django.contrib.auth.models import AnonymousUser
 
     request = HttpRequest()
     request.path = scope.get('path')
