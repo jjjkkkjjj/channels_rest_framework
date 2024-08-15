@@ -48,11 +48,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Introduction</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Action</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#generics-action-list">Generics Action List</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#retrieve-example">Retrieve Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#create-example">Create Example</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#generics-action-list">Generics Action List</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#define-your-custom-action">Define your custom action</a></li>
 </ul>
 </li>
@@ -61,7 +57,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../01_installation/index.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../02_generics/index.html">Generics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_rest_framework/index.html">REST Framework like</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">rest_framework_channels</a></li>
 </ul>
 
@@ -151,100 +147,7 @@ end"/>
 </tr>
 </tbody>
 </table>
-<p>For more details in <a class="reference internal" href="../02_generics/index.html#generics"><span class="std std-ref">generics section</span></a>.</p>
-<section id="retrieve-example">
-<h3>Retrieve Example<a class="headerlink" href="#retrieve-example" title="Link to this heading"></a></h3>
-<p>We use the below model and serializer as example.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple model to test with.&quot;&quot;&quot;</span>
-
-    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
-    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
-
-<span class="k">class</span> <span class="nc">TestSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
-    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">TestModel</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
-<span class="kn">from</span> <span class="nn">rest_framework_channels.consumers</span> <span class="kn">import</span> <span class="n">AsyncAPIConsumer</span>
-<span class="kn">from</span> <span class="nn">rest_framework_channels.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
-
-<span class="k">class</span> <span class="nc">ChildActionHandler</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">RetrieveAPIActionHandler</span><span class="p">):</span>
-    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
-    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">IsAuthenticated</span><span class="p">,)</span>
-
-<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">AsyncAPIConsumer</span><span class="p">):</span>
-    <span class="c1"># You can define the routing inside the consumer similar with original django&#39;s urlpatterns</span>
-    <span class="n">routepatterns</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">re_path</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s1">&#39;test_child_route/(?P&lt;pk&gt;[-\w]+)/$&#39;</span><span class="p">,</span>
-            <span class="n">ChildActionHandler</span><span class="o">.</span><span class="n">as_aaah</span><span class="p">(),</span>
-        <span class="p">),</span>
-    <span class="p">]</span>
-</pre></div>
-</div>
-<p>When you send the below json after establishing the connection,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span> <span class="c1"># Similar with GET method of HTTP request</span>
-    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>you will get the below response. This mechanism is very similar with original rest_framework!</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;content&#39;</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retrieve&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;test_child_route/1/&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="create-example">
-<h3>Create Example<a class="headerlink" href="#create-example" title="Link to this heading"></a></h3>
-<p>As mentioned before, <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s in the rest_framework_channels is also <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.
-When you give your consumer inherit with <code class="docutils literal notranslate"><span class="pre">generics.CreateAPIConsumer</span></code> and write down the serializer and queryset, you are all set to create a model!</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
-
-<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIConsumer</span><span class="p">):</span>
-    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
-    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>After establishing the connection and sending the below json,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;create&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Content&#39;</span>
-        <span class="c1"># route: &#39;&#39; # you don&#39;t need specify the route because of handled by Consumer</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>the new model will be created and you will get the below response.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;create&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Content&#39;</span>
-    <span class="p">}</span>
-    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">201</span><span class="p">,</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
+<p>For more details in <a class="reference internal" href="../02_rest_framework/02_generics.html#generics"><span class="std std-ref">generics section</span></a>.</p>
 </section>
 <section id="define-your-custom-action">
 <h2>Define your custom action<a class="headerlink" href="#define-your-custom-action" title="Link to this heading"></a></h2>

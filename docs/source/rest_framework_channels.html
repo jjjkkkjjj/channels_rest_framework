@@ -47,7 +47,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../docs/00_introduction/index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../docs/01_installation/index.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../docs/02_generics/index.html">Generics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/02_rest_framework/index.html">REST Framework like</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">rest_framework_channels</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">rest_framework_channels package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -71,22 +71,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.mixins.UpdateModelMixin"><code class="docutils literal notranslate"><span class="pre">UpdateModelMixin</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-rest_framework_channels.permissions">rest_framework_channels.permissions module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.AND"><code class="docutils literal notranslate"><span class="pre">AND</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.AllowAny"><code class="docutils literal notranslate"><span class="pre">AllowAny</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.BasePermission"><code class="docutils literal notranslate"><span class="pre">BasePermission</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.BasePermissionMetaclass"><code class="docutils literal notranslate"><span class="pre">BasePermissionMetaclass</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.IsAuthenticated"><code class="docutils literal notranslate"><span class="pre">IsAuthenticated</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.IsAuthenticatedStrictly"><code class="docutils literal notranslate"><span class="pre">IsAuthenticatedStrictly</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.IsOwner"><code class="docutils literal notranslate"><span class="pre">IsOwner</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.NOT"><code class="docutils literal notranslate"><span class="pre">NOT</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.OR"><code class="docutils literal notranslate"><span class="pre">OR</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.OperandHolder"><code class="docutils literal notranslate"><span class="pre">OperandHolder</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.OperationHolderMixin"><code class="docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.SingleOperandHolder"><code class="docutils literal notranslate"><span class="pre">SingleOperandHolder</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.permissions.WrappedDRFPermission"><code class="docutils literal notranslate"><span class="pre">WrappedDRFPermission</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#rest-framework-channels-permissions-module">rest_framework_channels.permissions module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-rest_framework_channels.routings">rest_framework_channels.routings module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.routings.RoutingManager"><code class="docutils literal notranslate"><span class="pre">RoutingManager</span></code></a></li>
 </ul>
@@ -96,11 +81,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.settings.reload_api_settings"><code class="docutils literal notranslate"><span class="pre">reload_api_settings()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-rest_framework_channels.utils">rest_framework_channels.utils module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.utils.ensure_async"><code class="docutils literal notranslate"><span class="pre">ensure_async()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rest_framework_channels.utils.request_from_scope"><code class="docutils literal notranslate"><span class="pre">request_from_scope()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#rest-framework-channels-utils-module">rest_framework_channels.utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-rest_framework_channels">Module contents</a></li>
 </ul>
 </li>
@@ -286,224 +267,8 @@ if you call the method decorated by this decorator in sync method</p>
 </dd></dl>
 
 </section>
-<section id="module-rest_framework_channels.permissions">
-<span id="rest-framework-channels-permissions-module"></span><h2>rest_framework_channels.permissions module<a class="headerlink" href="#module-rest_framework_channels.permissions" title="Link to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.AND">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">AND</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">op2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.AND" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.AND.has_permission">
-<span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.AND.has_permission" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.AllowAny">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">AllowAny</span></span><a class="headerlink" href="#rest_framework_channels.permissions.AllowAny" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
-<p>Allow any permission class</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.AllowAny.has_object_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.AllowAny.has_object_permission" title="Link to this definition"></a></dt>
-<dd><p>Called on every websocket message sent
-before the corresponding action handler is called.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.AllowAny.has_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.AllowAny.has_permission" title="Link to this definition"></a></dt>
-<dd><p>Called on every websocket message sent
-before the corresponding action handler is called.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.BasePermission">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">BasePermission</span></span><a class="headerlink" href="#rest_framework_channels.permissions.BasePermission" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base permission class</p>
-<p class="rubric">Notes</p>
-<p>You should extend this class
-and override the <cite>has_permission</cite> method to create your own permission class.</p>
-<dl class="py method">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">async</span> <span class="pre">has_permission</span> <span class="pre">(scope,</span> <span class="pre">handler,</span> <span class="pre">action,</span> <span class="pre">**kwargs)</span></span></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.BasePermission.can_connect">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.BasePermission.can_connect" title="Link to this definition"></a></dt>
-<dd><p>Called during connection to validate
-if a given client can establish a websocket connection.</p>
-<p>By default, this returns True and permits all connections to be made.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.BasePermission.can_connect_by_object_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect_by_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.BasePermission.can_connect_by_object_permission" title="Link to this definition"></a></dt>
-<dd><p>Called during connection to validate
-if a given client can establish a websocket connection.</p>
-<p>By default, this returns True and permits all connections to be made.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.BasePermission.has_object_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.BasePermission.has_object_permission" title="Link to this definition"></a></dt>
-<dd><p>Called on every websocket message sent
-before the corresponding action handler is called.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.BasePermission.has_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.BasePermission.has_permission" title="Link to this definition"></a></dt>
-<dd><p>Called on every websocket message sent
-before the corresponding action handler is called.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.BasePermissionMetaclass">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">BasePermissionMetaclass</span></span><a class="headerlink" href="#rest_framework_channels.permissions.BasePermissionMetaclass" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.OperationHolderMixin" title="rest_framework_channels.permissions.OperationHolderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsAuthenticated">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">IsAuthenticated</span></span><a class="headerlink" href="#rest_framework_channels.permissions.IsAuthenticated" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
-<p>Allow authenticated users</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsAuthenticated.has_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.IsAuthenticated.has_permission" title="Link to this definition"></a></dt>
-<dd><p>Called on every websocket message sent
-before the corresponding action handler is called.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsAuthenticatedStrictly">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">IsAuthenticatedStrictly</span></span><a class="headerlink" href="#rest_framework_channels.permissions.IsAuthenticatedStrictly" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.IsAuthenticated" title="rest_framework_channels.permissions.IsAuthenticated"><code class="xref py py-class docutils literal notranslate"><span class="pre">IsAuthenticated</span></code></a></p>
-<p>Allow authenticated users</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsAuthenticatedStrictly.can_connect">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.IsAuthenticatedStrictly.can_connect" title="Link to this definition"></a></dt>
-<dd><p>Called during connection to validate
-if a given client can establish a websocket connection.</p>
-<p>By default, this returns True and permits all connections to be made.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsOwner">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">IsOwner</span></span><a class="headerlink" href="#rest_framework_channels.permissions.IsOwner" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
-<p>Allow object owner</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsOwner.check_actions">
-<span class="sig-name descname"><span class="pre">check_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#rest_framework_channels.permissions.IsOwner.check_actions" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsOwner.has_object_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.IsOwner.has_object_permission" title="Link to this definition"></a></dt>
-<dd><p>Called on every websocket message sent
-before the corresponding action handler is called.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.IsOwner.lookup_field">
-<span class="sig-name descname"><span class="pre">lookup_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'user'</span></em><a class="headerlink" href="#rest_framework_channels.permissions.IsOwner.lookup_field" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.NOT">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">NOT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.NOT" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.NOT.has_permission">
-<span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.NOT.has_permission" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.OR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">OR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">op2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><span class="pre">BasePermission</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.OR" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.OR.has_permission">
-<span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.OR.has_permission" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.OperandHolder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">OperandHolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op1_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op2_class</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.OperandHolder" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.OperationHolderMixin" title="rest_framework_channels.permissions.OperationHolderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.OperationHolderMixin">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">OperationHolderMixin</span></span><a class="headerlink" href="#rest_framework_channels.permissions.OperationHolderMixin" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.SingleOperandHolder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">SingleOperandHolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op1_class</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.SingleOperandHolder" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.OperationHolderMixin" title="rest_framework_channels.permissions.OperationHolderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationHolderMixin</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.WrappedDRFPermission">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rest_framework_channels.permissions.</span></span><span class="sig-name descname"><span class="pre">WrappedDRFPermission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">permission</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BasePermission</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.permissions.WrappedDRFPermission" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#rest_framework_channels.permissions.BasePermission" title="rest_framework_channels.permissions.BasePermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePermission</span></code></a></p>
-<p>Used to wrap an instance of DRF permissions class.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.WrappedDRFPermission.can_connect">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.WrappedDRFPermission.can_connect" title="Link to this definition"></a></dt>
-<dd><p>Called during connection to validate
-if a given client can establish a websocket connection.</p>
-<p>By default, this returns True and permits all connections to be made.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.WrappedDRFPermission.can_connect_by_object_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">can_connect_by_object_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.WrappedDRFPermission.can_connect_by_object_permission" title="Link to this definition"></a></dt>
-<dd><p>Called during connection to validate
-if a given client can establish a websocket connection.</p>
-<p>By default, this returns True and permits all connections to be made.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.WrappedDRFPermission.has_permission">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncActionHandler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#rest_framework_channels.permissions.WrappedDRFPermission.has_permission" title="Link to this definition"></a></dt>
-<dd><p>Called on every websocket message sent
-before the corresponding action handler is called.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.WrappedDRFPermission.mapped_actions">
-<span class="sig-name descname"><span class="pre">mapped_actions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'connect':</span> <span class="pre">'HEAD',</span> <span class="pre">'create':</span> <span class="pre">'PUT',</span> <span class="pre">'list':</span> <span class="pre">'GET',</span> <span class="pre">'retrieve':</span> <span class="pre">'GET',</span> <span class="pre">'update':</span> <span class="pre">'PATCH'}</span></em><a class="headerlink" href="#rest_framework_channels.permissions.WrappedDRFPermission.mapped_actions" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rest_framework_channels.permissions.WrappedDRFPermission.permission">
-<span class="sig-name descname"><span class="pre">permission</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BasePermission</span></em><a class="headerlink" href="#rest_framework_channels.permissions.WrappedDRFPermission.permission" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<section id="rest-framework-channels-permissions-module">
+<h2>rest_framework_channels.permissions module<a class="headerlink" href="#rest-framework-channels-permissions-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-rest_framework_channels.routings">
 <span id="rest-framework-channels-routings-module"></span><h2>rest_framework_channels.routings module<a class="headerlink" href="#module-rest_framework_channels.routings" title="Link to this heading"></a></h2>
@@ -571,19 +336,8 @@ before the corresponding action handler is called.</p>
 <dd></dd></dl>
 
 </section>
-<section id="module-rest_framework_channels.utils">
-<span id="rest-framework-channels-utils-module"></span><h2>rest_framework_channels.utils module<a class="headerlink" href="#module-rest_framework_channels.utils" title="Link to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="rest_framework_channels.utils.ensure_async">
-<span class="sig-prename descclassname"><span class="pre">rest_framework_channels.utils.</span></span><span class="sig-name descname"><span class="pre">ensure_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rest_framework_channels.utils.ensure_async" title="Link to this definition"></a></dt>
-<dd><p>Ensure method is async if not wrap it in database_sync_to_async.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rest_framework_channels.utils.request_from_scope">
-<span class="sig-prename descclassname"><span class="pre">rest_framework_channels.utils.</span></span><span class="sig-name descname"><span class="pre">request_from_scope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HttpRequest</span></span></span><a class="headerlink" href="#rest_framework_channels.utils.request_from_scope" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+<section id="rest-framework-channels-utils-module">
+<h2>rest_framework_channels.utils module<a class="headerlink" href="#rest-framework-channels-utils-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-rest_framework_channels">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rest_framework_channels" title="Link to this heading"></a></h2>

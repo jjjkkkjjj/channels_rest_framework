@@ -27,6 +27,48 @@ If you have already understood the rest_framework's generics, there will be no n
 |    RetrieveDestroyAPIActionHandler    |    RetrieveDestroyAPIConsumer    |    RetrieveDestroyAPIView    |            retrieve/remove            |
 | RetrieveUpdateDestroyAPIActionHandler | RetrieveUpdateDestroyAPIConsumer | RetrieveUpdateDestroyAPIView | retrieve/update/partial_update/remove |
 
+## Create Example
+
+As mentioned before, `Consumer`s in the rest_framework_channels is also `ActionHandler`.
+When you give your consumer inherit with `generics.CreateAPIConsumer` and write down the serializer and queryset, you are all set to create a model!
+
+```python
+from rest_framework_channels import generics
+
+class ParentConsumer(generics.CreateAPIConsumer):
+    serializer_class = TestSerializer
+    queryset = TestModel.objects.all()
+```
+
+After establishing the connection and sending the below json,
+
+```python
+{
+    'action': 'create',
+    'data': {
+        'title': 'Title',
+        'content': 'Content'
+        # route: '' # you don't need specify the route because of handled by Consumer
+    },
+}
+```
+
+the new model will be created and you will get the below response.
+
+```python
+{
+    'errors': [],
+    'action': 'create',
+    'data': {
+        'id': 1,
+        'title': 'Title',
+        'content': 'Content'
+    }
+    'route': '',
+    'status': 201,
+}
+```
+
 ## Retrieve Example
 
 Let's see the `retrieve` example. You should inherit `RetrieveAPIActionHandler` to your `ActionHandler` like this;

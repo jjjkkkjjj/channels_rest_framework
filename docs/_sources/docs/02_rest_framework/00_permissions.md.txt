@@ -1,0 +1,81 @@
+# Permissions
+
+## Example
+
+Let's see the permission example.
+
+```python
+from rest_framework_channels.handlers import AsyncAPIActionHandler
+from rest_framework_channels.decorators import async_action
+from rest_framework_channels.consumers import AsyncAPIConsumer
+from rest_framework_channels.permissions import IsAuthenticated
+
+class ChildActionHandler(AsyncAPIActionHandler):
+    permission_classes = (IsAuthenticated,)
+
+    @async_action()
+    def your_custom_action(self, pk, *args, **kwargs):
+        # Note: you should return the data and status code.
+        return { 
+            'message': 'your_custom_action will be handled',
+            'model_id': pk
+        }, 200
+
+class ParentConsumer(AsyncAPIConsumer):
+    routepatterns = [
+        re_path(
+            r'test_child_route/(?P<pk>[-\w]+)/$',
+            ChildActionHandler.as_aaah(),
+        ),
+    ]
+```
+
+When your client is not authenticated, you'll receive 403 as status.
+
+```python
+{
+    'data': None,
+    'action': 'your_custom_action',
+    'route': 'test_child_route/',
+    'status': 403,
+}
+```
+
+Thanks to this mechanism, you can configure the permissions flexibly. For example, after establishing the connection, any clients will be allowed to `retrieve` action and the clients with only owner users will be allowed to `create` action.
+
+## Custom Permission
+
+You can define the custom permission by inheriting the `BasePermission` in `rest_framework_channels.permissions`.
+When you override the `has_permission` in `BasePermission`, your `has_permission` will be evaluated in `AsyncAPIActionHandler` for every `ActionHandler`'s actions.
+
+```python
+from rest_framework_channels.permissions import BasePermission
+
+class Auth(BasePermission):
+    async def has_permission(
+        self, scope: dict[str, Any], handler: AsyncActionHandler, action: str, **kwargs
+    ) -> bool:
+        
+        return check_have_authority(scope['user'])
+
+```
+
+```{note}
+the `scope` argument is channles one. See [docs](https://channels.readthedocs.io/en/stable/topics/consumers.html#scope) for more details.
+```
+
+Of cource, you can restrict the connection as well. In case of restricting the connection, all you have to do is inheriting the `can_connect`.
+
+```python
+from rest_framework_channels.permissions import BasePermission
+
+class StrictAuth(BasePermission):
+    async def can_connect(
+        self, scope: dict[str, Any], handler: AsyncActionHandler, message=None
+    ) -> bool:
+        
+        return check_have_authority(scope['user'])
+
+```
+
+`can_connect` will be evaluated before establishing the connection. That's why you can restrict the connection strictly.

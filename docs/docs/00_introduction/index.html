@@ -53,7 +53,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../01_installation/index.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../02_generics/index.html">Generics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_rest_framework/index.html">REST Framework like</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">rest_framework_channels</a></li>
 </ul>
 
@@ -93,7 +93,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="01_action_handler.html">Action Handler</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="01_action_handler.html#asyncapiactionhandler">AsyncAPIActionHandler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="01_action_handler.html#custom-permission">Custom Permission</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="02_routing.html">Routing</a></li>
@@ -101,6 +100,22 @@
 </div>
 <p>rest_framework_channels is the enhanced modules for REST WebSockets using django <a class="reference external" href="https://channels.readthedocs.io/en/latest/">channels</a>.</p>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">serializers</span></code> and <code class="docutils literal notranslate"><span class="pre">queryset</span></code> in <a class="reference external" href="https://www.django-rest-framework.org/">rest_framework</a> in rest_framework_channels. Also, we are ready for similar <code class="docutils literal notranslate"><span class="pre">permissions</span></code> and <code class="docutils literal notranslate"><span class="pre">generics</span></code> too.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We use the below model and serializer as example here.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple model to test with.&quot;&quot;&quot;</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TestSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">TestModel</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span>
+</pre></div>
+</div>
 </section>
 
 

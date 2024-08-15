@@ -21,8 +21,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="rest_framework_channels" href="../../source/modules.html" />
-    <link rel="prev" title="Installation" href="../01_installation/index.html" /> 
+    <link rel="next" title="Pagination" href="03_pagination.html" />
+    <link rel="prev" title="Serializers" href="01_serializers.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,9 +48,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../00_introduction/index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../01_installation/index.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Generics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#retrieve-example">Retrieve Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#list-example">List Example</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">REST Framework like</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="00_permissions.html">Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01_serializers.html">Serializers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Generics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-example">Create Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieve-example">Retrieve Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-example">List Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="03_pagination.html">Pagination</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">rest_framework_channels</a></li>
@@ -70,9 +77,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">REST Framework like</a></li>
       <li class="breadcrumb-item active">Generics</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/docs/02_generics/index.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/docs/02_rest_framework/02_generics.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -173,6 +181,43 @@ If you have already understood the rest_framework’s generics, there will be no
 </tr>
 </tbody>
 </table>
+<section id="create-example">
+<h2>Create Example<a class="headerlink" href="#create-example" title="Link to this heading"></a></h2>
+<p>As mentioned before, <code class="docutils literal notranslate"><span class="pre">Consumer</span></code>s in the rest_framework_channels is also <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code>.
+When you give your consumer inherit with <code class="docutils literal notranslate"><span class="pre">generics.CreateAPIConsumer</span></code> and write down the serializer and queryset, you are all set to create a model!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rest_framework_channels</span> <span class="kn">import</span> <span class="n">generics</span>
+
+<span class="k">class</span> <span class="nc">ParentConsumer</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIConsumer</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TestSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">TestModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>After establishing the connection and sending the below json,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;create&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Content&#39;</span>
+        <span class="c1"># route: &#39;&#39; # you don&#39;t need specify the route because of handled by Consumer</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>the new model will be created and you will get the below response.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;create&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Content&#39;</span>
+    <span class="p">}</span>
+    <span class="s1">&#39;route&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">201</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 <section id="retrieve-example">
 <h2>Retrieve Example<a class="headerlink" href="#retrieve-example" title="Link to this heading"></a></h2>
 <p>Let’s see the <code class="docutils literal notranslate"><span class="pre">retrieve</span></code> example. You should inherit <code class="docutils literal notranslate"><span class="pre">RetrieveAPIActionHandler</span></code> to your <code class="docutils literal notranslate"><span class="pre">ActionHandler</span></code> like this;</p>
@@ -263,8 +308,8 @@ If you have already understood the rest_framework’s generics, there will be no
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../01_installation/index.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../source/modules.html" class="btn btn-neutral float-right" title="rest_framework_channels" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="01_serializers.html" class="btn btn-neutral float-left" title="Serializers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="03_pagination.html" class="btn btn-neutral float-right" title="Pagination" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
