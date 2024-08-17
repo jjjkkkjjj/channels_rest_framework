@@ -26,7 +26,11 @@ class RoutingManager:
 
     # Any is intended for avoiding vscode's testing error due to circular import
     async def resolve(
-        self, route: str, scope: dict, receive: Callable, send: Callable, **kwargs
+        self,
+        route: str,
+        scope: dict,
+        receive: Callable,
+        send: Callable,
     ) -> AsyncActionHandler:
         """Resolve a given route
 
@@ -64,7 +68,7 @@ class RoutingManager:
                                 'args': outer.get('args', ()) + args,
                                 'kwargs': {**outer.get('kwargs', {}), **kwargs},
                             },
-                            route=route
+                            route=route,
                         ),
                         receive,
                         send,

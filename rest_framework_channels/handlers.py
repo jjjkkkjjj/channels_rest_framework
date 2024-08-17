@@ -8,6 +8,8 @@ from typing import Callable, Optional
 from urllib.parse import parse_qs, urlencode, urlparse
 
 from asgiref.sync import async_to_sync
+from channels import DEFAULT_CHANNEL_LAYER
+from channels.layers import BaseChannelLayer, get_channel_layer
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Model
 from django.http.response import Http404
@@ -89,10 +91,23 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
 
     json_encoder_class: json.JSONEncoder = api_settings.JSON_ENCODER_CLASS
 
+    channel_layer_alias = DEFAULT_CHANNEL_LAYER
+
     async def __call__(self, scope: dict, receive: Callable, send: Callable):
         """
         Dispatches incoming messages to type-based handlers asynchronously.
         """
+
+        # Initialize channel layer
+        self.channel_layer: BaseChannelLayer = get_channel_layer(
+            self.channel_layer_alias
+        )
+        if self.channel_layer is not None:
+            self.channel_name = await self.channel_layer.new_channel()
+            self.channel_receive = partial(
+                self.channel_layer.receive, self.channel_name
+            )
+
         self.action = None
         self.scope = scope
         if self._sync:
