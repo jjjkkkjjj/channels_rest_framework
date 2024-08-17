@@ -8,6 +8,17 @@ The enhanced modules for REST WebSockets using django channels.
 pip install rest_framework_channels
 ```
 
+After installing it, you should insert 'rest_framework_channels' in the INSTALLED_APPS.
+
+```python
+INSTALLED_APPS = [
+    # Websocket
+    'daphne',
+    'channels',
+    'rest_framework_channels', # add
+    ...
+```
+
 ## Introduction
 
 rest_framework_channels is the enhanced modules for REST WebSockets using django [channels](https://channels.readthedocs.io/en/latest/).

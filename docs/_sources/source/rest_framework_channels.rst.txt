@@ -1,6 +1,14 @@
 rest\_framework\_channels package
 =================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   rest_framework_channels.testing
+
 Submodules
 ----------
 

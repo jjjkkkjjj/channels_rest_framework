@@ -120,6 +120,15 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>rest_framework_channels
 </pre></div>
 </div>
+<p>After installing it, you should insert ‘rest_framework_channels’ in the INSTALLED_APPS.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Websocket</span>
+    <span class="s1">&#39;daphne&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;channels&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;rest_framework_channels&#39;</span><span class="p">,</span> <span class="c1"># add</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>

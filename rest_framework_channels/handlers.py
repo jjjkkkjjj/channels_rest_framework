@@ -87,6 +87,8 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
     routing: RoutingManager
     routepatterns = []
 
+    json_encoder_class: json.JSONEncoder = api_settings.JSON_ENCODER_CLASS
+
     async def __call__(self, scope: dict, receive: Callable, send: Callable):
         """
         Dispatches incoming messages to type-based handlers asynchronously.
@@ -144,7 +146,7 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
 
     @classmethod
     async def encode_json(cls, content) -> str:
-        return json.dumps(content)
+        return json.dumps(content, cls=AsyncActionHandler.json_encoder_class)
 
     @classmethod
     def as_aaah(cls, **initkwargs) -> Self:

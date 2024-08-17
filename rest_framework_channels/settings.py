@@ -7,6 +7,7 @@ from rest_framework.settings import perform_import
 DEFAULTS = {
     # Base API policies
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework_channels.permissions.AllowAny',),
+    'JSON_ENCODER_CLASS': None,
     # Generic action handler behavior
     'DEFAULT_PAGINATION_CLASS': None,
     'DEFAULT_FILTER_BACKENDS': [],
@@ -16,6 +17,7 @@ DEFAULTS = {
 # List of settings that may be in string import notation.
 IMPORT_STRINGS = (
     'DEFAULT_PERMISSION_CLASSES',
+    'JSON_ENCODER_CLASS',
     'DEFAULT_PAGINATION_CLASS',
     'DEFAULT_FILTER_BACKENDS',
 )

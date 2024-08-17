@@ -26,6 +26,7 @@ REST_FRAMEWORK_CHANNELS = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework_channels.permissions.AllowAny'
     ],
+    'JSON_ENCODER_CLASS': None,
     # Generic action handler behavior
     'DEFAULT_PAGINATION_CLASS': None,
     'DEFAULT_FILTER_BACKENDS': [],
