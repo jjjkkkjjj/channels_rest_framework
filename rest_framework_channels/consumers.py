@@ -35,6 +35,10 @@ class AsyncAPIConsumerBase(AsyncJsonWebsocketConsumer, AsyncAPIActionHandler):
                 self.kwargs = scope['url_route']['kwargs']
         await super().__call__(scope, receive, send)
 
+    @classmethod
+    async def encode_json(cls, content) -> str:
+        return await AsyncAPIActionHandler.encode_json(content)
+
     async def receive_json(self, content, **kwargs):
         # call AsyncAPIActionHandler's receive_json
         # instead of AsyncJsonWebsocketConsumer
