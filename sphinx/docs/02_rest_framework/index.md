@@ -12,4 +12,5 @@ Let's see some examples and you'll understand what we say.
 ./01_serializers
 ./02_generics
 ./03_pagination
+./04_broadcast
 ```

@@ -152,6 +152,19 @@
 <dd><p>Set the method as async action.
 Note that use <cite>async_to_sync</cite>
 if you call the method decorated by this decorator in sync method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> (<em>str</em>) – The available modes are [‘response’, ‘broadcast’, ‘none’]
+‘response’: Send the response to the user sending this action
+‘broadcast’: Broadcast the response to the users in the specific group
+‘none’: Do nothing at all</p></li>
+<li><p><strong>broadcast_type</strong> (<em>str</em>) – The type for broadcasting. If you specify this variable,
+use ‘_general.broadcast’</p></li>
+<li><p><strong>send_response_in_broadcast</strong> (<em>bool</em>) – Whether to send the response in broadcast mode, default to True</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -311,7 +324,7 @@ if you call the method decorated by this decorator in sync method</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rest_framework_channels.routings.RoutingManager.resolve">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncActionHandler</span></span></span><a class="headerlink" href="#rest_framework_channels.routings.RoutingManager.resolve" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncActionHandler</span></span></span><a class="headerlink" href="#rest_framework_channels.routings.RoutingManager.resolve" title="Link to this definition"></a></dt>
 <dd><p>Resolve a given route</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
