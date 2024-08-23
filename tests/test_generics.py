@@ -8,10 +8,10 @@ from rest_framework.pagination import PageNumberPagination
 
 from rest_framework_channels import generics
 from rest_framework_channels.consumers import AsyncAPIConsumer
+from rest_framework_channels.testing.websocket import ExtendedWebsocketCommunicator
 
 from .models import TestModel
 from .serializers import TestSerializer
-from .websocket import ExtendedWebsocketCommunicator
 
 
 @pytest.mark.django_db(transaction=True)

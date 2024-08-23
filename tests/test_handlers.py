@@ -7,8 +7,10 @@ from rest_framework_channels.consumers import AsyncAPIConsumer
 from rest_framework_channels.decorators import async_action
 from rest_framework_channels.handlers import AsyncAPIActionHandler
 from rest_framework_channels.permissions import IsAuthenticated
-
-from .websocket import AuthCommunicator, ExtendedWebsocketCommunicator
+from rest_framework_channels.testing.websocket import (
+    AuthCommunicator,
+    ExtendedWebsocketCommunicator,
+)
 
 
 @pytest.mark.django_db(transaction=True)

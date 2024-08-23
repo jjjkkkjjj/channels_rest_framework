@@ -4,8 +4,7 @@ import pytest
 
 from rest_framework_channels.consumers import AsyncAPIConsumer
 from rest_framework_channels.decorators import async_action
-
-from .websocket import ExtendedWebsocketCommunicator
+from rest_framework_channels.testing.websocket import ExtendedWebsocketCommunicator
 
 
 @pytest.mark.django_db(transaction=True)

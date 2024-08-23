@@ -14,10 +14,13 @@ from rest_framework_channels.generics import (
 )
 from rest_framework_channels.handlers import AsyncAPIActionHandler
 from rest_framework_channels.permissions import IsAuthenticated, IsOwner
+from rest_framework_channels.testing.websocket import (
+    AuthCommunicator,
+    ExtendedWebsocketCommunicator,
+)
 
 from .models import TestWithAuthorModel
 from .serializers import TestWithAuthorSerializer
-from .websocket import AuthCommunicator, ExtendedWebsocketCommunicator
 
 
 @pytest.mark.django_db(transaction=True)
