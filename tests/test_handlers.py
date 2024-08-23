@@ -6,8 +6,9 @@ from django.urls import path, re_path
 from rest_framework_channels.consumers import AsyncAPIConsumer
 from rest_framework_channels.decorators import async_action
 from rest_framework_channels.handlers import AsyncAPIActionHandler
+from rest_framework_channels.permissions import IsAuthenticated
 
-from .websocket import ExtendedWebsocketCommunicator
+from .websocket import AuthCommunicator, ExtendedWebsocketCommunicator
 
 
 @pytest.mark.django_db(transaction=True)
@@ -150,3 +151,92 @@ async def test_decorator_async_route():
     assert kwargs_results['test_sync_action'] == dict(child_id='3')
 
     await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
+async def test_broadcast(user):
+    kwargs_results = {}
+
+    class ChildConsumer(AsyncAPIActionHandler):
+        permission_classes = (IsAuthenticated,)
+
+        @async_action(
+            mode='broadcast',
+            broadcast_type='test.called',
+        )
+        async def test_async_action(self, **kwargs):
+            return {'test': 'content'}, 200
+
+    class ParentConsumer(AsyncAPIConsumer):
+        group_send_lookup_kwargs = 'group_id'
+
+        routepatterns = [
+            path(
+                'test_async_child_route/',
+                ChildConsumer.as_aaah(),
+            ),
+        ]
+
+        async def test_called(self, event):
+            kwargs_results['is_called'] = True
+            await self.send_json(event)
+
+    # Test a normal connection
+    auth_communicator = AuthCommunicator(
+        user, ParentConsumer(), '/testws/1234-5678/', kwargs=dict(group_id='1234-5678')
+    )
+    connected, _ = await auth_communicator.connect()
+
+    assert connected
+
+    unauth_communicator = ExtendedWebsocketCommunicator(
+        ParentConsumer(), '/testws/1234-5678/', kwargs=dict(group_id='1234-5678')
+    )
+    connected, _ = await unauth_communicator.connect()
+
+    assert connected
+
+    ## unauth user send
+    await unauth_communicator.send_json_to(
+        {
+            'action': 'test_async_action',
+            'route': 'test_async_child_route/',
+        }
+    )
+
+    response = await unauth_communicator.receive_json_from()
+
+    # error due to permission
+    assert response['status'] == 403
+    assert len(response['errors']) > 0
+
+    ## auth user send
+    await auth_communicator.send_json_to(
+        {
+            'action': 'test_async_action',
+            'route': 'test_async_child_route/',
+        }
+    )
+
+    response = await auth_communicator.receive_json_from()
+
+    assert response == {
+        'data': {'test': 'content'},
+        'status': 200,
+        'action': 'test_async_action',
+        'errors': [],
+        'route': 'test_async_child_route/',
+    }
+
+    response = await unauth_communicator.receive_json_from()
+
+    assert response == {
+        'type': 'test.called',
+        'data': {'test': 'content'},
+        'status': 200,
+    }
+    assert kwargs_results['is_called']
+
+    await auth_communicator.disconnect()
+    await unauth_communicator.disconnect()

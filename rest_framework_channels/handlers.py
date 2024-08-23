@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import logging
 from functools import partial, update_wrapper
-from typing import Callable, Optional
+from typing import Any, Callable, Optional
 from urllib.parse import parse_qs, urlencode, urlparse
 
 from asgiref.sync import async_to_sync
@@ -43,6 +43,7 @@ class APIActionHandlerMetaclass(type):
         cls = type.__new__(mcs, name, bases, body)
 
         cls.available_actions = {}
+        cls.actions_kwargs = {}
         cls.routing = RoutingManager()
         for method_name in dir(cls):
             attr = getattr(cls, method_name)
@@ -51,6 +52,7 @@ class APIActionHandlerMetaclass(type):
                 kwargs = getattr(attr, 'kwargs', {})
                 name = kwargs.get('name', method_name)
                 cls.available_actions[name] = method_name
+                cls.actions_kwargs[name] = kwargs
 
         for route in getattr(cls, 'routepatterns', []):
 
@@ -67,6 +69,10 @@ class APIActionHandlerMetaclass(type):
                 raise ImproperlyConfigured(f'{route}: include() is not supported.')
 
             assert isinstance(route, URLPattern)
+            if cls.group_send_lookup_kwargs is not None:
+                route.callback.handler_class._parent_group_send_lookup_kwargs = (
+                    cls.group_send_lookup_kwargs
+                )
             cls.routing.append(route)
 
         return cls
@@ -82,6 +88,7 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
 
     # key: action name, value: method name
     available_actions: dict[str, str]
+    actions_kwargs: dict[str, dict[str, Any]]
 
     _sync = False
 
@@ -92,6 +99,8 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
     json_encoder_class: json.JSONEncoder = api_settings.JSON_ENCODER_CLASS
 
     channel_layer_alias = DEFAULT_CHANNEL_LAYER
+    group_send_lookup_kwargs = None
+    _parent_group_send_lookup_kwargs = None
 
     async def __call__(self, scope: dict, receive: Callable, send: Callable):
         """
@@ -123,7 +132,33 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
                 self.args = scope['url_route']['args']
             if 'kwargs' in scope['url_route']:
                 self.kwargs = scope['url_route']['kwargs']
+
+        if self.channel_layer is not None and self.group_send_lookup_kwargs is not None:
+            # add group
+            assert self.group_send_lookup_kwargs in self.kwargs, (
+                f'Expected {self.__class__.__name__} to be called with '
+                f'a URL keyword argument named "{self.group_send_lookup_kwargs}". '
+                'Fix your routepettern, or set the `.group_send_lookup_kwargs` '
+                f'attribute on the {self.__class__.__name__} correctly.'
+            )
+            group_id = self.kwargs.get(self.group_send_lookup_kwargs)
+            if group_id is not None:
+                self.channel_layer.group_add(group_id, self.channel_name)
+            else:
+                raise AssertionError('The group_send_lookup_kwargs of kwargs is None')
+
         return self
+
+    async def __del__(self):
+        group_id = self.kwargs.get(self.group_send_lookup_kwargs)
+        if group_id is not None:
+            self.channel_layer.group_discard(group_id, self.channel_name)
+
+    @property
+    def group_id(self):
+        if self.group_send_lookup_kwargs:
+            return self.kwargs.get(self.group_send_lookup_kwargs)
+        return self.kwargs.get(self._parent_group_send_lookup_kwargs)
 
     async def send(self, text_data=None, bytes_data=None, close=False):
         """
@@ -276,7 +311,8 @@ class AsyncAPIActionHandler(AsyncActionHandler):
                 handler: AsyncActionHandler = await self.routing.resolve(
                     route, self.scope, self.base_receive, self.base_send
                 )
-                response = await handler.handle_action(action, route, **kwargs)
+                # response is None
+                await handler.handle_action(action, route, **kwargs)
             except NotFound:
                 # the action will be processed this class
 
@@ -284,6 +320,8 @@ class AsyncAPIActionHandler(AsyncActionHandler):
                     raise MethodNotAllowed(method=action) from None
 
                 method_name = self.available_actions[action]
+                method_kwargs = self.actions_kwargs[action]
+                mode = method_kwargs.get('mode', 'response')
                 method = getattr(self, method_name)
 
                 reply = partial(self.reply, action=action)
@@ -304,9 +342,26 @@ class AsyncAPIActionHandler(AsyncActionHandler):
 
                 response = await method(action=action, **kwargs)
 
-            if isinstance(response, tuple):
-                data, status = response
-                await reply(data=data, status=status, route=route)
+                if isinstance(response, tuple):
+                    data, status = response
+                    if mode == 'response':
+                        await reply(data=data, status=status, route=route)
+                    elif mode == 'broadcast':
+                        broadcast_type = method_kwargs.get(
+                            'broadcast_type', '_gereral.broadcast'
+                        )
+                        send_response_in_broadcast = method_kwargs.get(
+                            'send_response_in_broadcast', True
+                        )
+                        if send_response_in_broadcast:
+                            await reply(data=data, status=status, route=route)
+
+                        await self.channel_layer.group_send(
+                            self.group_id,
+                            dict(type=broadcast_type, data=data, status=status),
+                        )
+                    else:
+                        pass
 
         except Exception as exc:
             await self.handle_exception(exc, action=action, route=route)

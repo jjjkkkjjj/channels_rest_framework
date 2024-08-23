@@ -33,6 +33,21 @@ class AsyncAPIConsumerBase(AsyncJsonWebsocketConsumer, AsyncAPIActionHandler):
                 self.args = scope['url_route']['args']
             if 'kwargs' in scope['url_route']:
                 self.kwargs = scope['url_route']['kwargs']
+
+        if self.group_send_lookup_kwargs is not None:
+            # add group
+            assert self.group_send_lookup_kwargs in self.kwargs, (
+                f'Expected {self.__class__.__name__} to be called with '
+                f'a URL keyword argument named "{self.group_send_lookup_kwargs}". '
+                'Fix your routepettern, or set the `.group_send_lookup_kwargs` '
+                f'attribute on the {self.__class__.__name__} correctly.'
+            )
+            group_id = self.kwargs.get(self.group_send_lookup_kwargs)
+            if group_id is not None:
+                self.groups += [group_id]
+            else:
+                raise AssertionError('The group_send_lookup_kwargs of kwargs is None')
+
         await super().__call__(scope, receive, send)
 
     @classmethod
@@ -43,6 +58,10 @@ class AsyncAPIConsumerBase(AsyncJsonWebsocketConsumer, AsyncAPIActionHandler):
         # call AsyncAPIActionHandler's receive_json
         # instead of AsyncJsonWebsocketConsumer
         return await AsyncAPIActionHandler.receive_json(self, content, **kwargs)
+
+    async def _general_broadcast(self, event: dict):
+        event.pop('type')
+        await self.send_json(event)
 
 
 class AsyncAPIConsumer(AsyncAPIConsumerBase):

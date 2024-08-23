@@ -12,6 +12,11 @@ DATABASES = {
         'TEST': {'NAME': 'test_db.sqlite3'},
     }
 }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
 
 MIDDLEWARE_CLASSES = []
 
