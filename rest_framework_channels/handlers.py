@@ -31,7 +31,14 @@ from .settings import api_settings
 from .utils import ensure_async
 
 # Get an instance of a logger
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('rest_framework_channels')
+logger.setLevel(logging.INFO)
+logger.propagate = False
+
+# Console handler
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+logger.addHandler(console_handler)
 
 
 class APIActionHandlerMetaclass(type):
@@ -374,6 +381,8 @@ class AsyncAPIActionHandler(AsyncActionHandler):
         # None means apply action in this consumer
         route = content.pop('route', '')
 
+        logger.info(f'Websocket receive: {action} {route}')
+
         await self.handle_action(action, route, **content)
 
     async def reply(
@@ -399,5 +408,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
             'route': route,
             'status': status,
         }
+
+        logger.info(f'Websocket send: {action} {route} {status}')
 
         await self.send_json(payload)
