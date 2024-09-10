@@ -13,6 +13,12 @@ DEFAULTS = {
     'DEFAULT_FILTER_BACKENDS': [],
     # Pagination
     'PAGE_SIZE': None,
+    # Exception
+    'EXCEPTION_HANDLER': (
+        'rest_framework_channels.exceptions.debug_exception_handlers'
+        if settings.DEBUG
+        else 'rest_framework_channels.exceptions.production_exception_handlers'
+    ),
 }
 # List of settings that may be in string import notation.
 IMPORT_STRINGS = (
@@ -20,6 +26,7 @@ IMPORT_STRINGS = (
     'JSON_ENCODER_CLASS',
     'DEFAULT_PAGINATION_CLASS',
     'DEFAULT_FILTER_BACKENDS',
+    'EXCEPTION_HANDLER',
 )
 
 

@@ -15,6 +15,80 @@ from rest_framework_channels.testing.websocket import (
 
 @pytest.mark.django_db(transaction=True)
 @pytest.mark.asyncio
+async def test_exception_debug(debug_exception_handler):
+
+    class ChildConsumer(AsyncAPIActionHandler):
+        @async_action()
+        async def test_exception(self, **kwargs):
+            raise ValueError('Error')
+
+    class ParentConsumer(AsyncAPIConsumer):
+        routepatterns = [
+            path('test_async_child_route/', ChildConsumer.as_aaah()),
+        ]
+
+    # Test a normal connection
+    communicator = ExtendedWebsocketCommunicator(ParentConsumer(), '/testws/')
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    await communicator.send_json_to(
+        {
+            'action': 'test_exception',
+            'route': 'test_async_child_route/',
+        }
+    )
+
+    with pytest.raises(ValueError):
+        response = await communicator.receive_json_from()
+        await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
+async def test_exception_production():
+
+    class ChildConsumer(AsyncAPIActionHandler):
+        @async_action()
+        async def test_exception(self, **kwargs):
+            raise ValueError('Error')
+
+    class ParentConsumer(AsyncAPIConsumer):
+        routepatterns = [
+            path('test_async_child_route/', ChildConsumer.as_aaah()),
+        ]
+
+    # Test a normal connection
+    communicator = ExtendedWebsocketCommunicator(ParentConsumer(), '/testws/')
+
+    connected, _ = await communicator.connect()
+
+    assert connected
+
+    await communicator.send_json_to(
+        {
+            'action': 'test_exception',
+            'route': 'test_async_child_route/',
+        }
+    )
+
+    response = await communicator.receive_json_from()
+    errors = response.pop('errors')
+    assert response == {
+        'data': None,
+        'action': 'test_exception',
+        'route': 'test_async_child_route/',
+        'status': 500,
+    }
+    assert len(errors) > 0
+
+    await communicator.disconnect()
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.asyncio
 async def test_decorator_sync_route():
 
     class ChildConsumer(AsyncAPIActionHandler):

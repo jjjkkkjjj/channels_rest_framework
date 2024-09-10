@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING, Any, Callable
 
 from django.urls import URLPattern
 from django.urls.exceptions import Resolver404
-from rest_framework.exceptions import NotFound
+
+from .exceptions import RouteMissingException
 
 if TYPE_CHECKING:
     from .handlers import AsyncActionHandler
@@ -76,4 +77,4 @@ class RoutingManager:
             except Resolver404:
                 pass
 
-        raise NotFound(f'No route found: {route}')
+        raise RouteMissingException(f'No route found: {route}')

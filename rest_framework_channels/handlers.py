@@ -1,30 +1,30 @@
 from __future__ import annotations
 
+import asyncio
+
 # reference: https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/djangochannelsrestframework/consumers.py
 import json
 import logging
-from functools import partial, update_wrapper
+from functools import partial, update_wrapper, wraps
 from typing import Any, Callable, Optional
 from urllib.parse import parse_qs, urlencode, urlparse
 
 from asgiref.sync import async_to_sync
 from channels import DEFAULT_CHANNEL_LAYER
+from channels.db import database_sync_to_async
 from channels.layers import BaseChannelLayer, get_channel_layer
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Model
 from django.http.response import Http404
 from django.urls.resolvers import RegexPattern, RoutePattern, URLPattern, URLResolver
 from rest_framework.exceptions import (
-    APIException,
-    MethodNotAllowed,
-    NotFound,
     PermissionDenied,
 )
 from rest_framework.permissions import AND, NOT, OR
 from rest_framework.permissions import BasePermission as DRFBasePermission
 from typing_extensions import Self
 
-from .exceptions import ActionMissingException
+from .exceptions import ActionMissingException, ActionNotAllowed, RouteMissingException
 from .permissions import BasePermission, WrappedDRFPermission
 from .routings import RoutingManager
 from .settings import api_settings
@@ -82,6 +82,19 @@ class APIActionHandlerMetaclass(type):
                 )
             cls.routing.append(route)
 
+        exception_handler = api_settings.EXCEPTION_HANDLER
+        # to async
+        if not asyncio.iscoroutinefunction(exception_handler):
+            from functools import wraps
+
+            @wraps(exception_handler)
+            async def async_exception_handler(*args, **kwargs):
+                return await database_sync_to_async(exception_handler)(*args, **kwargs)
+
+            exception_handler = async_exception_handler
+
+        cls.exception_handler = exception_handler
+
         return cls
 
 
@@ -96,6 +109,11 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
     # key: action name, value: method name
     available_actions: dict[str, str]
     actions_kwargs: dict[str, dict[str, Any]]
+
+    # callable
+    # Caution: Use this function as staticmethod!
+    # such like AsyncActionHandler.exception_handler
+    exception_handler: Callable
 
     _sync = False
 
@@ -156,7 +174,7 @@ class AsyncActionHandler(metaclass=APIActionHandlerMetaclass):
 
         return self
 
-    async def __del__(self):
+    def __del__(self):
         group_id = self.kwargs.get(self.group_send_lookup_kwargs)
         if group_id is not None:
             self.channel_layer.group_discard(group_id, self.channel_name)
@@ -273,32 +291,27 @@ class AsyncAPIActionHandler(AsyncActionHandler):
         """
         Handle any exception that occurs, by sending an appropriate message
         """
-        if isinstance(exc, APIException):
-            await self.reply(
-                action=action,
-                errors=self._format_errors(exc.detail),
-                status=exc.status_code,
-                route=route,
-            )
-        elif exc == Http404 or isinstance(exc, Http404):
-            await self.reply(
-                action=action,
-                errors=self._format_errors('Not found'),
-                status=404,
-                route=route,
-            )
+
+        context = dict(action=action, route=route)
+        # these exceptions will be sent
+        if isinstance(
+            exc,
+            (
+                PermissionDenied,
+                ActionNotAllowed,
+            ),
+        ):
+            context.update(status=exc.status_code, errors=[exc.detail])
+        else:
+            context = await AsyncActionHandler.exception_handler(exc, context)
+        if context:
+            await self.reply(**context)
         else:
             logger.error(
-                f'Error when handling request: {action}',
+                f'Error when handling action: {action}',
                 exc_info=exc,
             )
             raise exc
-
-    def _format_errors(self, errors):
-        if isinstance(errors, list):
-            return errors
-        elif isinstance(errors, (str, dict)):
-            return [errors]
 
     async def handle_action(self, action: str, route: Optional[str], **kwargs):
         """
@@ -308,7 +321,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
         them back over the ws connection to the client.
 
         If there is no action listed on the consumer for this action name
-        a `MethodNotAllowed` error is sent back over the ws connection.
+        a `ActionNotAllowed` error is sent back over the ws connection.
         """
         try:
             await self.check_permissions(action, **kwargs)
@@ -320,11 +333,11 @@ class AsyncAPIActionHandler(AsyncActionHandler):
                 )
                 # response is None
                 await handler.handle_action(action, route, **kwargs)
-            except NotFound:
+            except RouteMissingException:
                 # the action will be processed this class
 
                 if action not in self.available_actions:
-                    raise MethodNotAllowed(method=action) from None
+                    raise ActionNotAllowed(method=action) from None
 
                 method_name = self.available_actions[action]
                 method_kwargs = self.actions_kwargs[action]
