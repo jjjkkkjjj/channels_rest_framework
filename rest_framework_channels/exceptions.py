@@ -20,10 +20,15 @@ class RouteMissingException(exceptions.APIException):
     default_code = 'not_found'
 
 
-class ActionNotAllowed(exceptions.APIException):
+class ActionNotAllowed(exceptions.MethodNotAllowed):
     status_code = status.HTTP_405_METHOD_NOT_ALLOWED
     default_detail = _('Action "{action}" not allowed in message body.')
     default_code = 'method_not_allowed'
+
+    def __init__(self, action, detail=None, code=None):
+        if detail is None:
+            detail = f'Action "{action}" not allowed in message body.'
+        self.detail = detail
 
 
 async def debug_exception_handlers(

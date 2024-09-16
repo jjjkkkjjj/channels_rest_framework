@@ -337,7 +337,7 @@ class AsyncAPIActionHandler(AsyncActionHandler):
                 # the action will be processed this class
 
                 if action not in self.available_actions:
-                    raise ActionNotAllowed(method=action) from None
+                    raise ActionNotAllowed(action=action) from None
 
                 method_name = self.available_actions[action]
                 method_kwargs = self.actions_kwargs[action]
